@@ -1,0 +1,196 @@
+% The % symbol means this is a comment!
+
+%Define document class: e.g. article, book, or beamer (for beamer presentations, which are similar to powerpoint)
+%Usually article is the default
+%The options in brackets allow you to define the page type, type size, etc.
+\documentclass[a4paper,11pt]{article}
+
+%Include various packages to extend capabilities
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%You will not generally need all of these, but...
+% \usepackage{graphicx} %Allows us to use figures
+% \usepackage{fullpage} %Sets all margins to 1.5 cm
+% %\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry} %Could use this for custom margins
+% \usepackage{amsfonts} %More fonts
+% \usepackage{amsmath} %More math
+% \usepackage{subfigure} %Allows subfigures, if we like
+% \usepackage{setspace}
+% \usepackage{epigraph}
+% \usepackage{colortbl} %Allows the fancy color table below
+% \usepackage{xcolor}
+% \usepackage{array,booktabs}
+
+
+%Always begin the document with...
+\begin{document}
+
+%Title and abstract...
+\title{ORD Flight Delays EDA}
+\author{Aden Ramirez}
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\section{Important Terms}
+This contains some terms and information that will be used throughout the EDA that may not be common knowledge to help you understand. 
+
+\textbf{Delay} - A flight delay is defined by the Federal Aviation Administration (FAA) as a flight arriving 15 minutes or longer after scheduled arrivale time
+
+\textbf{FAA} - Federal Aviation Administration is (FAA) is the governing body of all aviation in the U.S from aircraft certification to air traffic control
+
+\textbf{DOT} - Department of Transportation (DOT) is a governing body that regulates all transportation, in this case they offer many unique identifiers 
+and are the parent body to the Bureau of Transportation Statistics (BTS) that the data is sourced from.
+
+\textbf{IATA} - International Air Transport Association (IATA) is an organization that makes a standard for transport type aircraft and in our case create the airport codes referenced
+throughout this research. 
+
+\textbf{ICAO} - International Civil Aviation Organization (ICAO) is a United Nations body that has standards for worldwide air travel. They are less important in this research as we look at domestic travel,
+they do play in role in how the U.S forms their regulations.
+
+\section{The Data} \label{data}
+This data was collected from the Bureau of Transportation Statistics (BLS) as part of the online Airline On-Time Arrival Performance Data. 
+I selected one year of data to begin, choosing the most recent as of Janurary 2023. The data range spans all U.S. Carriers flying domestically over the course of November 2021 - November 2022.
+The data has many fields totaling to 120 columns. BLS provides an excellent readme that explains each data field, though I will highlight some very important ones to my research here.
+
+\emph{Note: \_ is not shown in these data types as they appear in the .CSV}
+
+\subsection{Basics}
+There are alot of columns that are basic information that would be expected of most sets, there is alot of options in this set with plenty of formating opertunity.
+
+\textbf{Year} - Year (4 digit)
+
+\textbf{Quarter} - Quarter of the year (1-4)
+
+\textbf{Month} - Month
+
+\textbf{DayofMonth} - Day date of the month
+
+\textbf{DayofWeek} - Day in words, such as 'Monday'
+
+\textbf{FlightDate} - Flight Date Aggregation (yyyymmdd)
+
+\subsection{Indentifiers}
+There are many indentifiers included that are not entirely useful for my use as a DOT Marketing ID, but worth having should there be NA data columns that can be cross referenced.
+There is also multiple ways to indentify \emph{anything} in aviation, so there are international Air Transport Association(IATA) and US identifiers in this set.
+The most important for my analysis are:
+
+\textbf{Marketing Airline Network} - These are common codes for airlines someone would see on their ticket, such as UA for United Airlines 
+
+\textbf{Tail Number} - Aircraft Tail Number, can uniquely identify a register aircraft
+
+\textbf{Flight Number Operating Airline} - Flight number as you would see on a ticket for example: UA1234
+
+\subsection{Flight Information}
+
+\subsubsection{Route Information}
+All the information pertaining to the route of the flight:
+
+\textbf{Origin} - Origin Airport in IATA standard (3 Letter) Example: ORD or PHX
+
+\textbf{OriginCityName} - Origin Airport City (There are special cases such as CLT)
+
+\textbf{OriginState} - Origin State Code
+
+\textbf{OriginStateFips} - Origin State FIPS code, this will allow for adding state geometry in maps
+
+\textbf{OriginStateName} - Origin State Name string
+
+\textbf{Dest} - Destination Airport in IATA standard
+
+\textbf{DestCityName} - Destination Airport City
+
+\textbf{DestState} - Destination State Code
+
+\textbf{DestStateFips} - Destination State FIPS code, this will allow for adding state geometry in maps
+
+\textbf{DestStateName} - Destination State Name string
+
+\subsubsection{Delay Information}
+All the information pertaining to the timing of the flight, and delay if applicable. There is much more, but this is a good focus for the analysis and EDA.
+Extensive diversion information is not included, as it is noted, but not the focus of the research.
+
+\textbf{CRSDepTime} - CRS Departure Time (local time: hhmm)
+
+\textbf{DepTime} - Actual Departure Time (local time: hhmm)
+
+\textbf{DepDelay} - Difference in minutes between scheduled and actual departure time
+
+\textbf{DepDelayMinutes} - Difference in minutes between scheduled and actual departure time
+
+\textbf{DepDel15} - Departure Delay Indicator if the flight is at least 15 minutes delayed
+
+\textbf{DepartureDelayGroups} - Departure Delay intervals, every (15 minutes from <-15 to >180)
+
+\textbf{DepTimeBlk} - CRS Departure Time Block, Hourly Intervals
+
+\textbf{TaxiOut} - Taxi Out Time, in Minutes
+
+\textbf{WheelsOff} - Wheels Off Time (local time: hhmm)
+
+\textbf{WheelsOn} - Wheels On Time (local time: hhmm)
+
+\textbf{TaxiIn} - Taxi In Time, in Minutes
+
+\textbf{CRSArrTime} - CRS Arrival Time (local time: hhmm)
+
+\textbf{ArrTime} - Actual Arrival Time (local time: hhmm)
+
+\textbf{ArrDelay} - Difference in minutes between scheduled and actual arrival time. Early arrivals show negative numbers.
+
+\textbf{ArrDelayMinutes} - Difference in minutes between scheduled and actual arrival time. Early arrivals set to 0.
+
+\textbf{ArrDel15} - Arrival Delay Indicator, 15 Minutes or More (1=Yes)
+
+\textbf{ArrivalDelayGroups} - Arrival Delay intervals, every (15 minutes from $\leq$ 15 to $>$ 180 minutes )
+
+\textbf{ArrTimeBlk} - CRS Arrival Time Block, Hourly Intervals
+
+\textbf{Cancelled} - Cancelled Flight Indicator (1=Yes)
+
+\textbf{CancellationCode} - Specifies The Reason For Cancellation
+
+\textbf{Diverted} - Diverted Flight Indicator (1=Yes)
+
+\textbf{CRSElapsedTime} - CRS Elapsed Time of Flight, in Minutes
+
+\textbf{ActualElapsedTime} - Elapsed Time of Flight, in Minutes
+
+\textbf{AirTime} - Flight Time, in Minutes
+
+\textbf{Flights} - Number of Flights
+
+\textbf{Distance} - Distance between airports (miles)
+
+\textbf{DistanceGroup} - Distance Intervals, every 250 Miles, for Flight Segment
+
+\textbf{CarrierDelay} - Carrier Delay, in Minutes
+
+\textbf{WeatherDelay} - Weather Delay, in Minutes
+
+\textbf{NASDelay} - National Air System Delay, in Minutes
+
+\textbf{SecurityDelay} - Security Delay, in Minutes
+
+\section{Data Cleaning}
+
+\subsection{Aggregation}
+Collecting the initial one year (11/21-11/22) data from BTS yields twelve seperate .zip files containing a .csv file and .html documentation readme.
+The first step to using this data is to concatanate all this information together into one usable format.
+I accomplish this with a Python script using the \emph{Pandas} library. This script pulls in all .csv files into a list of Pandas Dataframes.
+Once these are Pandas Dataframes it is quite simple with all variables matching, they get concatanated. 
+Now with a single monolithic Dataframe, it is written to a new .csv file.
+
+\subsection{Subset Files} \label{datasubset}
+This research is focusing on a single airport, Chicago O'Hare International Airport. The data sourced is for all U.S Airline Carriers that fly domestically.
+The first step in cleaning this data is to properly subset the information into a smaller, less bloated file to reference. My approach will produce to files as output.
+
+First, one main file will use the \emph{Pandas} library in Python to pull in our single monolithic csv file into a Dataframe. From here it is quite simple to mask only the data we want.
+I filter by either the \emph{Origin} or \emph{Dest} to be the airport of interest ORD.
+Once this mask is applied, the values are verfied to be an expected value, and once again exported using the next masked dataframe to a seperate .csv file. 
+
+Second, a second file that contains only variables being heavily used, to help with operation speed. All the variables listed in section \ref{data} will be maintained.
+The process will follow the same process as section \ref{datasubset}. The output will be a much more compact file to operate on, to aid speed for the EDA and future model development.
+
+\end{document} 
