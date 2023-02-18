@@ -1,34 +1,30 @@
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,12pt]{article}
 
-%You will not generally need all of these, but...
-\usepackage{graphicx} %Allows us to use figures
-% \usepackage{fullpage} %Sets all margins to 1.5 cm
-% %\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry} %Could use this for custom margins
-% \usepackage{amsfonts} %More fonts
-% \usepackage{amsmath} %More math
-\usepackage{subfigure} %Allows subfigures, if we like
-% \usepackage{setspace}
-% \usepackage{epigraph}
-% \usepackage{colortbl} %Allows the fancy color table below
-% \usepackage{xcolor}
-% \usepackage{array,booktabs}
-
-%Always begin the document with...
+\usepackage{graphicx} 
+\usepackage{subfigure}
 \begin{document}
 
-%Title and abstract...
 \title{ORD Flight Delays EDA}
 \author{Aden Ramirez}
 \maketitle
 
-% \begin{abstract}
-% \end{abstract}
+\begin{abstract}
+    ORD is one of the biggest and busiest airports in the United States suporting hundreds of thousands of flights a year.
+    The data that will be analized November 2021 - November 2022 flights at O'Hare international Aiport obtained from the Bureau of Transportation Statistics.   
+    This exploratory data analysis will explain te process of cleaning the data and its methods. Then will explore some basic stats on delays, and how the airport itself is used 
+    and delayed. Last a couple intuitions of some possible variable relationships will be visualized.
+\end{abstract}
+
+\pagebreak
 
 \section{Important Terms}
 This contains some terms and information that will be used throughout the EDA that may not be common knowledge to help you understand. 
 
+\subsection{General}
+
 \textbf{Delay} - A flight delay is defined by the Federal Aviation Administration (FAA) as a flight arriving 15 minutes or longer after scheduled arrivale time
 
+\subsection{Governing Bodies}
 \textbf{FAA} - Federal Aviation Administration is (FAA) is the governing body of all aviation in the U.S from aircraft certification to air traffic control
 
 \textbf{DOT} - Department of Transportation (DOT) is a governing body that regulates all transportation, in this case they offer many unique identifiers 
@@ -39,6 +35,13 @@ throughout this research.
 
 \textbf{ICAO} - International Civil Aviation Organization (ICAO) is a United Nations body that has standards for worldwide air travel. They are less important in this research as we look at domestic travel,
 they do play in role in how the U.S forms their regulations.
+
+\subsection{Airline Theory}
+
+\textbf{Hub and Spoke} - This is a major theory of how to operate and airline, in short it means the airline has many big airport hubs that fly to other hubs.
+Each hub will then fly the passenger to thier final destination.
+
+\textbf{Point to Point} - This is another rivaling theory to hub and spoke, this means the airline will just fly the airport to the destination with not stop.
 
 \section{The Data} \label{data}
 This data was collected from the Bureau of Transportation Statistics (BLS) as part of the online Airline On-Time Arrival Performance Data. 
@@ -112,7 +115,7 @@ Extensive diversion information is not included, as it is noted, but not the foc
 
 \textbf{DepDel15} - Departure Delay Indicator if the flight is at least 15 minutes delayed
 
-\textbf{DepartureDelayGroups} - Departure Delay intervals, every (15 minutes from <-15 to >180)
+\textbf{DepartureDelayGroups} - Departure Delay intervals, every (15 minutes from $\leq$ 15 to $>$ 180)
 
 \textbf{DepTimeBlk} - CRS Departure Time Block, Hourly Intervals
 
@@ -181,51 +184,119 @@ First, one main file will use the \emph{Pandas} library in Python to pull in our
 I filter by either the \emph{Origin} or \emph{Dest} to be the airport of interest ORD.
 Once this mask is applied, the values are verfied to be an expected value, and once again exported using the next masked dataframe to a seperate .csv file. 
 
-Second, a second file that contains only variables being heavily used, to help with operation speed. All the variables listed in section \ref{data} will be maintained.
-The process will follow the same process as section \ref{datasubset}. The output will be a much more compact file to operate on, to aid speed for the EDA and future model development.
+Second, a second file that contains only variables being heavily used, to help with operation speed. All the variables listed in section Figure \ref{data} will be maintained.
+The process will follow the same process as section Figure \ref{datasubset}. The output will be a much more compact file to operate on, to aid speed for the EDA and future model development.
+
+\subsection{NA Values}
+Now that the data has been subset into what will be used to explore, the next concern is NA values. There are some columns where this is acceptable, but other such as out delay times
+that are not. The first step is finiding all the columns that have an NA value and then determining what the value should be replaced with. Many of the delay related columns have many NA values,
+the delay types (Weather, NAS, Security, and Late Aircraft) are null if they are not applicable. These columns get their NA values set to 0, as in no delay minutes. This takes care of the NAs that could corrupt data.
+The last big concerning item is flights that have no delay value, either arrival delay or arrival delay minutes, which could not be creted. Any NAs of these are dropped.
+This operation dropped \emph{17004} data points. This is signifigant, but still far less than 5\% of all the data. This now leaves the data with \emph{582721} observations.
+
+\subsection{Miscellaneous}
+Outliers in this dataset can get large. I decided to explore with a data subset where all delays are \emph{6 hours (720 min.)} or less (still including non-delays). This decision is not final as a better
+consideration for what an outlier is should be condicted in this set. This does simplify understanding the data, and making the point through visualiztion easier for the purpose of this EDA.
+With this data mask the observations left is now \emph{582045}.
 
 \section{Exploratory Data Analysis}
+
+To begin exploring the data there is some basic information to gather to learn about this data and begin to show some areas that may be worth investigating further with machine learning models.
+
+\textbf{ORD Amount of Flights}: 582045
+
+\textbf{ORD Amount of Delays}: 106187
+
+\textbf{ORD Percent of Flights Delayed}: 18\%
+
+\textbf{ORD All Flights Delay Mean}: 3 minutes
+
+\textbf{ORD All Flights Delay Median}: -8 minutes (8 minutes early!)
+
+\textbf{ORD Delayed Flights Mean}: 67 minutes
+
+\textbf{ORD Delayed Flights Median}: 42 minutes
+
+To begin breaking down the delays that occur, there are five categories officially made by the FAA in this data set tracked. Carrier Delay, Late Aircraft Delay, National Air System Delay, Security Delay, and Weather Delay.
 
 \begin{figure}
     \centering
     \includegraphics*[scale=.5]{../../img/ord_delay_split_pie.png}
     \caption[Delays by Type]{ORD Delays by Type}
     \label{fig:delaybytype}
+    As seen in Figure \ref{fig:delaybytype} the two biggest delays are by carrier and late aircraft. The research questions are going to dive much deeper in how these delays are created and interacted with by airline and airport staff. Prediciting and eliminating 
+    these delays could say millions of hours a year.
 \end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.40]{../../img/3h_box.png}
+    \caption[]{}
+    \label{fig:3hbox}
+    In Figure \ref{fig:3hbox} This box plot is capped at the highest delay group in the data, 180 minutes or 3 hours. The large amount of flights are delayed for short amounts of time, but you can see the 
+    two largest areas cover much higher ranges of delays.    
+\end{figure}
+
 
 \begin{figure}
     \centering
     \includegraphics*[scale=.40]{../../img/ord_delay_t_month.png}
     \caption[]{}
     \label{fig:delaybymonth}
+    In Figure \ref{fig:delaybymonth} this reflects similar to the pie chart, of note is the summer months have a much higher delay count. The busy travel season could be contributing to this, and worth further investigation.
 \end{figure}
+
 
 \begin{figure}
     \centering
-    \includegraphics*[scale=.40]{../../img/delays_by_airline.png}
+    \includegraphics*[scale=.35]{../../img/delays_by_airline.png}
     \caption[]{}
     \label{fig:delaybyairline}
+    In Figure \ref{fig:delaybyairline} this shows the amount of delays distibution by each operating airline. United and American have the largest,
+    which can be expected as ORD is a hub airport for American Airlines, and United Airlines who both fly a hub and spoke model. 
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics*[scale=.40]{../../img/flights_by_airline.png}
     \caption[]{}
-    \label{fig:flightsbyairline}
+    \label{fig:flightsbyairline} 
+    In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a signifigantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    there is not as large a difference in their delay distributions.
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics*[scale=.40]{../../img/dist_by_delay.png}
+    \includegraphics*[]{../../img/dist_by_delay.png}
     \caption[]{}
     \label{fig:lm_disbydelay}
+    In Figure \ref{fig:lm_disbydelay} One of the relationships I wanted to briefly look at to further think about in the coming day was distance of the flight and the arrival delay.
+    This is a very stange visual I want to look into more, there is almost a regonizeable cluster for certian distance airports. Theis has no relationship between just these two variables.
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics*[scale=.40]{../../img/airtime_by_delay.png}
+    \includegraphics*[]{../../img/airtime_by_delay.png}
     \caption[]{}
     \label{fig:lm_airtimebydelay}
+    In Figure \ref{fig:lm_airtimebydelay} The other relationship I wanted to preview was airtime by arrival delay, the thinking being more time in the air laves possibility 
+    to make up time flying faster or catching good wind. This very simple linear regression shows not simple relationship, though at a glance looks like more airline has lower delays, but there is obviously a more complex relationship.
 \end{figure}
+
+\break
+\section{Conclusion}
+
+This exploratory data analysis cleaned the data to be more usable, indentified some areas the data could be improved, and explored some basic relationships.
+Moving forward to modelling some this EDA will prove valuable to understanding the data, and helping work towards the data being easily workable for machine learning models.
+\subsection{Data Improvement}
+During the EDA there is some spots of the data that can be improved and expanded. For future visualizations it would be helpful to have a nicer way of showing information
+such as airline names or even a map showing where flights go. There are supporting tables provided by BTS that would assist in expanding tha data. Another consideration is how to deal with outliers when building models
+there is a large range, that shouldn't eliminate all high delays. This should be solved mathmatically and researched what the FAA considers long delays, or a point of where delay is considered a new flight. Working with the data 
+could also be made easier with some table work, on the names, and adding new information that is used more than once.
+
+\subsection{Relationships and Methods}
+In the EDA only a couple areas were explored, and both showed the problem is much more complex than a linear regression. Thinking ahead I think the possibility of a logisitic regression is there that could provide a good predictor or a delay.
+Another area I did not consider earlier is trees that could prove promising. There may be the need for some dimension reduction as these complex relationships may start adding uo in variable size. Lastly clustering may still be a good option where there are splits on more focused data.
 
 \end{document} 
