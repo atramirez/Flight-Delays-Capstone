@@ -1,12 +1,4 @@
-% The % symbol means this is a comment!
-
-%Define document class: e.g. article, book, or beamer (for beamer presentations, which are similar to powerpoint)
-%Usually article is the default
-%The options in brackets allow you to define the page type, type size, etc.
 \documentclass[a4paper,11pt]{article}
-
-%Include various packages to extend capabilities
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %You will not generally need all of these, but...
 % \usepackage{graphicx} %Allows us to use figures
@@ -21,7 +13,6 @@
 % \usepackage{xcolor}
 % \usepackage{array,booktabs}
 
-
 %Always begin the document with...
 \begin{document}
 
@@ -30,8 +21,8 @@
 \author{Aden Ramirez}
 \maketitle
 
-\begin{abstract}
-\end{abstract}
+% \begin{abstract}
+% \end{abstract}
 
 \section{Important Terms}
 This contains some terms and information that will be used throughout the EDA that may not be common knowledge to help you understand. 
@@ -192,5 +183,7 @@ Once this mask is applied, the values are verfied to be an expected value, and o
 
 Second, a second file that contains only variables being heavily used, to help with operation speed. All the variables listed in section \ref{data} will be maintained.
 The process will follow the same process as section \ref{datasubset}. The output will be a much more compact file to operate on, to aid speed for the EDA and future model development.
+
+\section{Exploratory Data Analysis}
 
 \end{document} 
