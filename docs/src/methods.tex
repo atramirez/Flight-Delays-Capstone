@@ -1,0 +1,78 @@
+\documentclass[a4paper,12pt]{article}
+
+% \usepackage{graphicx} 
+% \usepackage{subfigure}
+\begin{document}
+
+\title{ORD Flight Delays Methodology}
+\author{Aden Ramirez}
+\maketitle
+
+\pagebreak
+
+\section{Research Question 1}
+Can flight delays be predicted?
+
+\subsubsection{Method 1}
+
+The first method for this question that will be applied is logisitic regression. This method will have two possible categorical outputs, being the flight is delayed
+or the flight is not delayed (Using >15m FAA definition).
+
+\subsubsection{Method 2}
+The second method for this question that will be applied is a random forest decision tree. This method will build an output of either delayed or not delayed.
+
+\subsection{Method 3}
+The third method for this research question is also a random forest decision tree, but using more categorical outputs. These being our delay groups that are used in the dataset. They are not delayed, 15 minutes - 30 minutes, and builds all 15 minute increments
+up to 180 minuts for a total of 12 possible groups. 
+
+\subsection{Data}
+For the models in this research question we will provide:
+
+Airline
+Origin
+Departure Block
+Departure Delay
+Destination
+Arrival Block
+Arrival Delay (True or False)
+Distance 
+
+\section{Research Question 2}
+What role do airports play in flight delays?
+
+\subsubsection{Method 1}
+The first method being applied for this research question is logisitic regression.
+
+\subsubsection{Method 2}
+The second method being applied for this research question is a random forest decision tree.
+
+\subsection{Data}
+For the models in this research question we will provide:
+Origin
+Destination
+Distance
+Arrival Delay (True or False)
+
+
+\section{Research Question 3}
+Does airport congestion make the air travel system more prone to delays?
+
+number for how much time of the delay was on the ground taxing or not being at the gate
+
+\subsubsection{Method 1}
+The first method being applied for this research question is logisitic regression.
+
+\subsubsection{Method 2}
+The second method being applied for this research question is a random forest decision tree.
+
+\subsection{Data}
+For the models in this research question we will provide:
+Origin
+Taxi Out
+Departure Block
+Destination
+Taxi in
+Arrival Block
+Arrival Delay (True or False)
+
+\end{document} 
