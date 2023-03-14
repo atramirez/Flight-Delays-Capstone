@@ -558,3 +558,4 @@ $RECYCLE.BIN/
 # Ignore large data that will be stored elsewhere and brought in on local machine
 ORD_11_21-11_22.csv
 ORD_11_21-11-22_short.csv
+ORD_11_21-11_22_model.csv
