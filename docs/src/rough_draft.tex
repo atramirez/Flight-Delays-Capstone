@@ -1,0 +1,540 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{graphicx} 
+\usepackage{subfigure}
+\begin{document}
+
+\title{ORD Flight Delays}
+\author{Aden Ramirez}
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+%TODO ATR: Need to add 4-8 sections
+%TODO: need to fix formatting, last probably
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Project Plan}
+Data:
+
+Source: Bureau of Transportation Statistics
+
+About:
+The data being analyzed is sourced from the U.S Bureau of Transportation Statistics, part of the
+Department of Transportation. This data is collected by the Bureau is sourced from each U.S
+based airline self-reports each month. This includes each flight details that would be seen at
+any airport, its operation time on the ground, air, and deviation from scheduled times. This also
+includes some data beyond the flight itself such as the cause of delay and how long each is
+contributing to the overall total. In the event of a diversion or cancellation that is also observed
+and coded with reasons, and its destination. There is a lot of terms used that will need to be
+well defined in the project to assist in the readers understanding but is well documented by the
+organization.
+
+Organization Details:
+
+Primary Company Details:
+
+Address:
+
+Bureau of Transportation Statistics (BTS)
+
+1200 New Jersey Avenue, SE
+
+Washington, DC 20590
+
+United States
+
+Company Communication:
+
+Website: https://www.bts.gov/
+
+Phone: 800-853-1351
+
+Alt Phone: 202-366-3282
+
+Business Hours:
+
+8:30am-5:00pm ET, M-F
+
+Key Leaders:
+
+Ms. Patricia S. Hu: Director of the Bureau of Transportation Statistics
+
+Dr. Rolf R. Schmitt: Deputy Director of the Bureau of Transportation Statistics
+
+Research Motivation:
+
+The U.S air travel system is a convoluted complex system, this past year we have seen the
+effects of natural disasters effecting holiday travel. Even after we witnessed a meltdown of
+Southwest airlines that was completely operational. Airlines have huge amounts of data
+available to them, and the U.S. Department of Transportation collects huge amounts from
+them. Data on delays, cancellations and diversions we can look more closely at the fragile
+system and areas that have the most effect of these studders. With data like this, airlines can
+focus changes on specific areas, or be able to plan around common weather conditions in areas
+of the country.
+
+Research Questions:
+
+Research Question 1:
+
+Are flight delays preventable through airline operations?
+
+Research Question 2:
+
+What role do airports play in flight delays?
+
+Research Question 3:
+
+Does airport congestion make the air travel system more prone to delays?
+
+Hypotheses:
+
+Hypothesis 1:
+
+Looking at different categories of flight delays and difference in actual air time vs. actual flight
+time we can observe the effect of factors that are less directly related to flying the plan, but the
+business surrounding it. Seeing airline meltdowns outside of a winter storm as this past year,
+there are more problems than unpredictable weather. I intend to identify, quantify, and predict
+where these problems can lead to delays in flights.
+
+Hypothesis 2:
+
+When travelling often delays given have a wide range of reasons, many of which are owned by
+the airport property itself. This can be delays stemming from waiting for an available gate,
+spacing out the large amount of flights traveling through for safety, or checks and repairs on
+the grounds. The airports are the start and endpoints we wait in and play some sort of role
+when it comes to you missing your arrival by minutes or hours.
+
+Hypothesis 3:
+
+Over the years some of the same flights have gotten scheduled longer even as planes have
+gotten faster and more aerodynamic. There have also been more and more flights being added
+to airlines rosters. Are these behaviors reflected from an expectation of delays? Flying from two
+busy airports such as LAX-JFK there is more time on the ground to maintain safe separation and
+avoid incident.
+
+Methodology:
+
+For research question one, we are looking at where delays are coming from. I want to
+use the data to make regression models (ANCOVA or Multiple Linear Regression) that can
+predict delays based on several factors given in the data and possibly built upon with some
+classification such as airport traffic flow class or if the flight is flown hub and spoke or point to
+point.
+
+For research question two, I want to investigate the role airports play in delays, looking
+a lot at the time on the ground. I want to use some classification model looking at flights where
+the time on the ground during an airport operation such as taxing, waiting for a gate may occur
+or if the delay stems from airborne operations or nature.
+
+For research question three I want to look at time on the ground, this information I can
+classify if the flight was delayed from the ground operation or during the flight. I would like to
+use clustering to see similar causes of the delay and see where it is concentrated in the country.
+This could also show flaws in the two main airline models of hub and spoke or point to point
+flying
+
+\section{Exploratory Data Analysis}
+
+\begin{abstract}
+    ORD is one of the biggest and busiest airports in the United States suporting hundreds of thousands of flights a year.
+    The data that will be analized November 2021 - November 2022 flights at O'Hare international Aiport obtained from the Bureau of Transportation Statistics.   
+    This exploratory data analysis will explain te process of cleaning the data and its methods. Then will explore some basic stats on delays, and how the airport itself is used 
+    and delayed. Last a couple intuitions of some possible variable relationships will be visualized.
+\end{abstract}
+
+\pagebreak
+
+\subsection{Important Terms}
+This contains some terms and information that will be used throughout the EDA that may not be common knowledge to help you understand. 
+
+\subsubsection{General}
+
+\textbf{Delay} - A flight delay is defined by the Federal Aviation Administration (FAA) as a flight arriving 15 minutes or longer after scheduled arrivale time
+
+\subsubsection{Governing Bodies}
+\textbf{FAA} - Federal Aviation Administration is (FAA) is the governing body of all aviation in the U.S from aircraft certification to air traffic control
+
+\textbf{DOT} - Department of Transportation (DOT) is a governing body that regulates all transportation, in this case they offer many unique identifiers 
+and are the parent body to the Bureau of Transportation Statistics (BTS) that the data is sourced from.
+
+\textbf{IATA} - International Air Transport Association (IATA) is an organization that makes a standard for transport type aircraft and in our case create the airport codes referenced
+throughout this research. 
+
+\textbf{ICAO} - International Civil Aviation Organization (ICAO) is a United Nations body that has standards for worldwide air travel. They are less important in this research as we look at domestic travel,
+they do play in role in how the U.S forms their regulations.
+
+\subsubsection{Airline Theory}
+
+\textbf{Hub and Spoke} - This is a major theory of how to operate and airline, in short it means the airline has many big airport hubs that fly to other hubs.
+Each hub will then fly the passenger to thier final destination.
+
+\textbf{Point to Point} - This is another rivaling theory to hub and spoke, this means the airline will just fly the airport to the destination with not stop.
+
+\subsection{The Data} \label{data}
+This data was collected from the Bureau of Transportation Statistics (BLS) as part of the online Airline On-Time Arrival Performance Data. 
+I selected one year of data to begin, choosing the most recent as of Janurary 2023. The data range spans all U.S. Carriers flying domestically over the course of November 2021 - November 2022.
+The data has many fields totaling to 120 columns. BLS provides an excellent readme that explains each data field, though I will highlight some very important ones to my research here.
+
+\emph{Note: \_ is not shown in these data types as they appear in the .CSV}
+
+\subsubsection{Basics}
+There are alot of columns that are basic information that would be expected of most sets, there is alot of options in this set with plenty of formating opertunity.
+
+\textbf{Year} - Year (4 digit)
+
+\textbf{Quarter} - Quarter of the year (1-4)
+
+\textbf{Month} - Month
+
+\textbf{DayofMonth} - Day date of the month
+
+\textbf{DayofWeek} - Day in words, such as 'Monday'
+
+\textbf{FlightDate} - Flight Date Aggregation (yyyymmdd)
+
+\subsubsection{Indentifiers}
+There are many indentifiers included that are not entirely useful for my use as a DOT Marketing ID, but worth having should there be NA data columns that can be cross referenced.
+There is also multiple ways to indentify \emph{anything} in aviation, so there are international Air Transport Association(IATA) and US identifiers in this set.
+The most important for my analysis are:
+
+\textbf{Marketing Airline Network} - These are common codes for airlines someone would see on their ticket, such as UA for United Airlines 
+
+\textbf{Tail Number} - Aircraft Tail Number, can uniquely identify a register aircraft
+
+\textbf{Flight Number Operating Airline} - Flight number as you would see on a ticket for example: UA1234
+
+\subsubsection{Flight Information}
+
+\subsubsection{Route Information}
+All the information pertaining to the route of the flight:
+
+\textbf{Origin} - Origin Airport in IATA standard (3 Letter) Example: ORD or PHX
+
+\textbf{OriginCityName} - Origin Airport City (There are special cases such as CLT)
+
+\textbf{OriginState} - Origin State Code
+
+\textbf{OriginStateFips} - Origin State FIPS code, this will allow for adding state geometry in maps
+
+\textbf{OriginStateName} - Origin State Name string
+
+\textbf{Dest} - Destination Airport in IATA standard
+
+\textbf{DestCityName} - Destination Airport City
+
+\textbf{DestState} - Destination State Code
+
+\textbf{DestStateFips} - Destination State FIPS code, this will allow for adding state geometry in maps
+
+\textbf{DestStateName} - Destination State Name string
+
+\subsubsection{Delay Information}
+All the information pertaining to the timing of the flight, and delay if applicable. There is much more, but this is a good focus for the analysis and EDA.
+Extensive diversion information is not included, as it is noted, but not the focus of the research.
+
+\textbf{CRSDepTime} - CRS Departure Time (local time: hhmm)
+
+\textbf{DepTime} - Actual Departure Time (local time: hhmm)
+
+\textbf{DepDelay} - Difference in minutes between scheduled and actual departure time
+
+\textbf{DepDelayMinutes} - Difference in minutes between scheduled and actual departure time
+
+\textbf{DepDel15} - Departure Delay Indicator if the flight is at least 15 minutes delayed
+
+\textbf{DepartureDelayGroups} - Departure Delay intervals, every (15 minutes from $\leq$ 15 to $>$ 180)
+
+\textbf{DepTimeBlk} - CRS Departure Time Block, Hourly Intervals
+
+\textbf{TaxiOut} - Taxi Out Time, in Minutes
+
+\textbf{WheelsOff} - Wheels Off Time (local time: hhmm)
+
+\textbf{WheelsOn} - Wheels On Time (local time: hhmm)
+
+\textbf{TaxiIn} - Taxi In Time, in Minutes
+
+\textbf{CRSArrTime} - CRS Arrival Time (local time: hhmm)
+
+\textbf{ArrTime} - Actual Arrival Time (local time: hhmm)
+
+\textbf{ArrDelay} - Difference in minutes between scheduled and actual arrival time. Early arrivals show negative numbers.
+
+\textbf{ArrDelayMinutes} - Difference in minutes between scheduled and actual arrival time. Early arrivals set to 0.
+
+\textbf{ArrDel15} - Arrival Delay Indicator, 15 Minutes or More (1=Yes)
+
+\textbf{ArrivalDelayGroups} - Arrival Delay intervals, every (15 minutes from $\leq$ 15 to $>$ 180 minutes )
+
+\textbf{ArrTimeBlk} - CRS Arrival Time Block, Hourly Intervals
+
+\textbf{Cancelled} - Cancelled Flight Indicator (1=Yes)
+
+\textbf{CancellationCode} - Specifies The Reason For Cancellation
+
+\textbf{Diverted} - Diverted Flight Indicator (1=Yes)
+
+\textbf{CRSElapsedTime} - CRS Elapsed Time of Flight, in Minutes
+
+\textbf{ActualElapsedTime} - Elapsed Time of Flight, in Minutes
+
+\textbf{AirTime} - Flight Time, in Minutes
+
+\textbf{Flights} - Number of Flights
+
+\textbf{Distance} - Distance between airports (miles)
+
+\textbf{DistanceGroup} - Distance Intervals, every 250 Miles, for Flight Segment
+
+\textbf{CarrierDelay} - Carrier Delay, in Minutes
+
+\textbf{WeatherDelay} - Weather Delay, in Minutes
+
+\textbf{NASDelay} - National Air System Delay, in Minutes
+
+\textbf{SecurityDelay} - Security Delay, in Minutes
+
+\subsection{Data Cleaning}
+
+\subsubsection{Aggregation}
+Collecting the initial one year (11/21-11/22) data from BTS yields twelve seperate .zip files containing a .csv file and .html documentation readme.
+The first step to using this data is to concatanate all this information together into one usable format.
+I accomplish this with a Python script using the \emph{Pandas} library. This script pulls in all .csv files into a list of Pandas Dataframes.
+Once these are Pandas Dataframes it is quite simple with all variables matching, they get concatanated. 
+Now with a single monolithic Dataframe, it is written to a new .csv file.
+
+\subsubsection{Subset Files} \label{datasubset}
+This research is focusing on a single airport, Chicago O'Hare International Airport. The data sourced is for all U.S Airline Carriers that fly domestically.
+The first step in cleaning this data is to properly subset the information into a smaller, less bloated file to reference. My approach will produce to files as output.
+
+First, one main file will use the \emph{Pandas} library in Python to pull in our single monolithic csv file into a Dataframe. From here it is quite simple to mask only the data we want.
+I filter by either the \emph{Origin} or \emph{Dest} to be the airport of interest ORD.
+Once this mask is applied, the values are verfied to be an expected value, and once again exported using the next masked dataframe to a seperate .csv file. 
+
+Second, a second file that contains only variables being heavily used, to help with operation speed. All the variables listed in section Figure \ref{data} will be maintained.
+The process will follow the same process as section Figure \ref{datasubset}. The output will be a much more compact file to operate on, to aid speed for the EDA and future model development.
+
+\subsubsection{NA Values}
+Now that the data has been subset into what will be used to explore, the next concern is NA values. There are some columns where this is acceptable, but other such as out delay times
+that are not. The first step is finiding all the columns that have an NA value and then determining what the value should be replaced with. Many of the delay related columns have many NA values,
+the delay types (Weather, NAS, Security, and Late Aircraft) are null if they are not applicable. These columns get their NA values set to 0, as in no delay minutes. This takes care of the NAs that could corrupt data.
+The last big concerning item is flights that have no delay value, either arrival delay or arrival delay minutes, which could not be creted. Any NAs of these are dropped.
+This operation dropped \emph{17004} data points. This is signifigant, but still far less than 5\% of all the data. This now leaves the data with \emph{582721} observations.
+
+\subsubsection{Miscellaneous}
+Outliers in this dataset can get large. I decided to explore with a data subset where all delays are \emph{6 hours (720 min.)} or less (still including non-delays). This decision is not final as a better
+consideration for what an outlier is should be condicted in this set. This does simplify understanding the data, and making the point through visualiztion easier for the purpose of this EDA.
+With this data mask the observations left is now \emph{582045}.
+
+\subsection{Exploratory Data Analysis}
+
+To begin exploring the data there is some basic information to gather to learn about this data and begin to show some areas that may be worth investigating further with machine learning models.
+
+\textbf{ORD Amount of Flights}: 582045
+
+\textbf{ORD Amount of Delays}: 106187
+
+\textbf{ORD Percent of Flights Delayed}: 18\%
+
+\textbf{ORD All Flights Delay Mean}: 3 minutes
+
+\textbf{ORD All Flights Delay Median}: -8 minutes (8 minutes early!)
+
+\textbf{ORD Delayed Flights Mean}: 67 minutes
+
+\textbf{ORD Delayed Flights Median}: 42 minutes
+
+To begin breaking down the delays that occur, there are five categories officially made by the FAA in this data set tracked. Carrier Delay, Late Aircraft Delay, National Air System Delay, Security Delay, and Weather Delay.
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.5]{../../img/ord_delay_split_pie.png}
+    \caption[Delays by Type]{ORD Delays by Type}
+    \label{fig:delaybytype}
+    As seen in Figure \ref{fig:delaybytype} the two biggest delays are by carrier and late aircraft. The research questions are going to dive much deeper in how these delays are created and interacted with by airline and airport staff. Prediciting and eliminating 
+    these delays could say millions of hours a year.
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.40]{../../img/3h_box.png}
+    \caption[]{}
+    \label{fig:3hbox}
+    In Figure \ref{fig:3hbox} This box plot is capped at the highest delay group in the data, 180 minutes or 3 hours. The large amount of flights are delayed for short amounts of time, but you can see the 
+    two largest areas cover much higher ranges of delays.    
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.45]{../../img/3h_kde.png}
+    \caption[]{}
+    \label{fig:3hkde}
+    In Figure \ref{fig:3hkde} looking at arrival delays, we can see the highest density peaks well before the hour mark sharply decreasing to a non zero
+    before the max included amount (180 minutes).
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.40]{../../img/ord_delay_t_month.png}
+    \caption[]{}
+    \label{fig:delaybymonth}
+    In Figure \ref{fig:delaybymonth} this reflects similar to the pie chart, of note is the summer months have a much higher delay count. The busy travel season could be contributing to this, and worth further investigation.
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.35]{../../img/delays_by_airline.png}
+    \caption[]{}
+    \label{fig:delaybyairline}
+    In Figure \ref{fig:delaybyairline} this shows the amount of delays distibution by each operating airline. United and American have the largest,
+    which can be expected as ORD is a hub airport for American Airlines, and United Airlines who both fly a hub and spoke model. 
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.40]{../../img/flights_by_airline.png}
+    \caption[]{}
+    \label{fig:flightsbyairline} 
+    In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a signifigantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    there is not as large a difference in their delay distributions.
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[]{../../img/dist_by_delay.png}
+    \caption[]{}
+    \label{fig:lm_disbydelay}
+    In Figure \ref{fig:lm_disbydelay} One of the relationships I wanted to briefly look at to further think about in the coming day was distance of the flight and the arrival delay.
+    This is a very stange visual I want to look into more, there is almost a regonizeable cluster for certian distance airports. Theis has no relationship between just these two variables.
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[]{../../img/airtime_by_delay.png}
+    \caption[]{}
+    \label{fig:lm_airtimebydelay}
+    In Figure \ref{fig:lm_airtimebydelay} The other relationship I wanted to preview was airtime by arrival delay, the thinking being more time in the air laves possibility 
+    to make up time flying faster or catching good wind. This very simple linear regression shows not simple relationship, though at a glance looks like more airline has lower delays, but there is obviously a more complex relationship.
+\end{figure}
+
+\break
+\subsection{Conclusion}
+
+This exploratory data analysis cleaned the data to be more usable, indentified some areas the data could be improved, and explored some basic relationships.
+Moving forward to modelling some this EDA will prove valuable to understanding the data, and helping work towards the data being easily workable for machine learning models.
+\subsubsection{Data Improvement}
+During the EDA there is some spots of the data that can be improved and expanded. For future visualizations it would be helpful to have a nicer way of showing information
+such as airline names or even a map showing where flights go. There are supporting tables provided by BTS that would assist in expanding tha data. Another consideration is how to deal with outliers when building models
+there is a large range, that shouldn't eliminate all high delays. This should be solved mathmatically and researched what the FAA considers long delays, or a point of where delay is considered a new flight. Working with the data 
+could also be made easier with some table work, on the names, and adding new information that is used more than once.
+
+\subsubsection{Relationships and Methods}
+In the EDA only a couple areas were explored, and both showed the problem is much more complex than a linear regression. Thinking ahead I think the possibility of a logisitic regression is there that could provide a good predictor or a delay.
+Another area I did not consider earlier is trees that could prove promising. There may be the need for some dimension reduction as these complex relationships may start adding uo in variable size. Lastly clustering may still be a good option where there are splits on more focused data.
+
+\section{Methodology}
+
+\subsection{Research Question 1}
+Can flight delays be predicted?
+
+For this question we want a good overall look at stages of a flight, taxi, departure, landing, taxi, and arrival. The goal is to categorize if a flight will be delayed,
+this is useful for airlines and people for expectations and planning around it. However there should also be an attempt at predicting the length of the delay to make 
+the information more meaningful. This question will be solved with three different methods.
+
+\subsubsection{Method 1}
+
+The first method for this question that will be applied is logisitic regression. This method will have two possible categorical outputs, being the flight is delayed
+or the flight is not delayed (Using $>$15m FAA definition). Logisitic regression is great for two class problems, and will fit well here.
+
+\subsubsection{Method 2}
+The second method for this research question is also a random forest decision tree, but using more categorical outputs. These being our delay groups that are used in the dataset. They are not delayed, 15 minutes - 30 minutes, and builds all 15 minute increments
+up to 180 minuts for a total of 12 possible groups. The power of the decision tress will allow to go beyond saying a flight is delayed or not, and offer a range following
+the ranges the DOT provides.
+
+\subsection{Research Question 2}
+What role do airports play in flight delays?
+
+For this question focus is put closer to the airport and the delays themselves. To determine an airports fault there is a couple categories such as security and late aircraft that can be considered airport delays,
+but also adding a new type with the taxi time at each airport. Getting this information I can predict the categories of delays.
+
+\subsubsection{Method 1}
+The first method for this question that will be applied is logisitic regression. This method will have two possible categorical outputs, being the airport is the main delay
+or other.
+
+\subsubsection{Method 2}
+The second method being applied for this research question is a random forest decision tree. This method will output multiple categories corresponding to the type fo delay possible.
+
+
+\subsection{Research Question 3}
+Can airport congestion be predicted based on flight delays?
+
+This final question puts a focus on the operations around a flight, specifically late aircraft, taxi times, and departure delays. The answers for this question should be if the airport is 
+congested (or busy) during that flight. If most of the flights are during congested times the airport can generally be considered congested.
+
+\subsubsection{Method 1}
+The first method being applied for this research question is logistic regression. This method will have two possible categorical outputs, being the airport is congested with many flight delays
+or not congested.
+
+\subsubsection{Method 2}
+The second method being applied for this research question is a random forest decision tree. This method will have two possible categorical outputs, being the airport is congested with many flight delays
+or not congested.
+
+\subsection{Validation}
+With the methods being used, there will need to be many validation methods used. For logisitc regression there will need to be simple classification measures such as accuracy and precision that can be determined
+testing the model on a subset of the data. With this info sensitivity and specificity can also be calculated, and all reported in a table before the next method. An ROC curve will also be used as a nice visual for these values calculated.
+For decision trees there will be variable inmportance measures and predictions verfied on a subset of the data. Both will start with 75\% of the data being used for training and the last 25\% to be used in validation.
+
+\subsection{Data}
+For the models in this research question we will provide:
+
+Airline
+
+Origin
+
+Departure Block
+
+Departure Delay
+
+Destination
+
+Arrival Block
+
+Arrival Delay (Time in minutes)
+
+Arrival Delay (True or False)
+
+Distance 
+
+Carrier Delay
+
+Late Aircraft Delay
+
+Air System Delay
+
+Security Delay
+
+Weather Delay
+
+Taxi Time
+
+\section{Ethical Recommendations}
+
+\section{Challenges}
+
+\section{Recommendations}
+
+\section{References}
+
+\section{Appendix}
+
+\section{Code}
+
+\end{document} 
