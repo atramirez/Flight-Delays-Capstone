@@ -2,6 +2,7 @@
 
 \usepackage{graphicx} 
 \usepackage{subfigure}
+\usepackage{pythonhighlight}
 \begin{document}
 
 \title{ORD Flight Delays}
@@ -75,7 +76,7 @@ effects of natural disasters effecting holiday travel. Even after we witnessed a
 Southwest airlines that was completely operational. Airlines have huge amounts of data
 available to them, and the U.S. Department of Transportation collects huge amounts from
 them. Data on delays, cancellations and diversions we can look more closely at the fragile
-system and areas that have the most effect of these studders. With data like this, airlines can
+system and areas that have the most effect of these stutters. With data like this, airlines can
 focus changes on specific areas, or be able to plan around common weather conditions in areas
 of the country.
 
@@ -105,7 +106,7 @@ where these problems can lead to delays in flights.
 
 Hypothesis 2:
 
-When travelling often delays given have a wide range of reasons, many of which are owned by
+When traveling often delays given have a wide range of reasons, many of which are owned by
 the airport property itself. This can be delays stemming from waiting for an available gate,
 spacing out the large amount of flights traveling through for safety, or checks and repairs on
 the grounds. The airports are the start and endpoints we wait in and play some sort of role
@@ -138,11 +139,39 @@ use clustering to see similar causes of the delay and see where it is concentrat
 This could also show flaws in the two main airline models of hub and spoke or point to point
 flying
 
+\section{Literature Review}
+
+As the air travel has grown substantially over the past 60 years, the investment in new facilities, aircraft and improved efficiency has grown along with it.
+Airlines in the United States pour huge amounts of time and effort into reducing delays each year. In the past 10 years we have observed delays hover around 20\%
+in the country, with the exception of 2020. To further understand delays and what exists in the data science realm, I explore some of the research and their discoveries.
+To begin identifying some areas of interest is important to further understand the topic and begin the design of a model. “As seen in Figure 1,
+there are six major themes regarding the flight delay: departure, arrival, propagation, airline, airport, and air system”\cite{doi:10.1080/01441647.2020.1861123}.%(Carvalho, Sternberg, A., p. 502)
+As they point out all these areas have significant impact on a flight, from facilities to actual flying, focusing on one of these and using the rest as aspects in a prediction
+will allow for a good model to be developed, but be loosely applicable to the rest. Knowing areas of interest allow me to break down further and apply data science to a smaller area.
+The data to be used is a good foundation for this exploration. In multiple articles On the relevance of data science for flight delay research: a systematic review. Transport Reviews,
+Estimating Flight Departure Delay Distributions-A Statistical Approach With Long-Term Trend and Short-Term Pattern, and Predictive Modelling: Flight Delays and Associated Factors,
+Hartsfield–Jackson Atlanta International Airport applicable data techniques were applied to sets sourced mainly from two organizations. These organizations being the Federal Aviation Administration (FAA)
+and Bureau of Transportation Statics (BTS). Both reputable government organizations, the FAA regulating all encompassing air travel, and BTS reporting data around transportation.
+The set we have chosen has been referenced in multiple studies, pulling from the BTS database of on-time flight statistics. 
+Applying methods on this data would build towards some next steps of research that provides further progress in the field. “One step in that direction would be to try to extract, from individual airline–airport models,
+the effects that contribute to NAS-wide delay. Such an approach would provide more insight into the general structure of delays, and also would be easier to maintain and update on a NAS-wide basis”\cite{doi:10.1198/016214507000000257}. %( Tu, Ball, M. O., \& Jank, p.124).
+ This set will be used to predict delays in Chicago’s O’Hare International Airport (ORD), using methods such as regression, bringing another airport model that could support or refute findings at other airports contributing to a national level of predictions.
+Looking at airport specific studies some consideration must be given to the data with methods used. For example in “Since we faced a problem of unbalanced classes with 86\% of flights without delay and 14\% of delayed flights
+ and since this problem can lead to a false classification accuracy [20,21] we applied a sampling technique to minimize it”\cite{HENRIQUES2018638}. Classification being used in their studies had to build on top of cleaning to maximize accuracy. %(Henriques, \& Feiteira, I, p.641).
+  Methods being used include regression, classification, and neural networks. I plan to build on top of their work and with working on a specific airport and tailoring data preparation. Data is tailored to each airport or airline,
+   or even airport and airline in these articles and examining their methods they can be tweaked to be useful for ORD. 
+Research in flight delays is extensive, though much of airline delay prediction is a more closely guarded secret as they use this to build their flight schedules. Looking at different reasons for delays reveals some areas of focus.
+ My research will focus on the airport and using other identifiers for the model, but this allows the narrowing of the dataset, and can contribute to a national prediction adding an airport to extrapolate national identifiers.
+  The data being used is reliable and referenced in multiple research articles,
+  allowing for some questions to be expanded from others. Methods and cleaning must be tailored to the airport, but may be similar to previous research, which can help finding the most prominent variables that effect a flight delay.
+   This research will expand the knowledge base with ORD delay research, introducing more up to date data.
+
+
 \section{Exploratory Data Analysis}
 
 \begin{abstract}
-    ORD is one of the biggest and busiest airports in the United States suporting hundreds of thousands of flights a year.
-    The data that will be analized November 2021 - November 2022 flights at O'Hare international Aiport obtained from the Bureau of Transportation Statistics.   
+    ORD is one of the biggest and busiest airports in the United States supporting hundreds of thousands of flights a year.
+    The data that will be analyzed November 2021 - November 2022 flights at O'Hare international Airport obtained from the Bureau of Transportation Statistics.   
     This exploratory data analysis will explain te process of cleaning the data and its methods. Then will explore some basic stats on delays, and how the airport itself is used 
     and delayed. Last a couple intuitions of some possible variable relationships will be visualized.
 \end{abstract}
@@ -154,7 +183,7 @@ This contains some terms and information that will be used throughout the EDA th
 
 \subsubsection{General}
 
-\textbf{Delay} - A flight delay is defined by the Federal Aviation Administration (FAA) as a flight arriving 15 minutes or longer after scheduled arrivale time
+\textbf{Delay} - A flight delay is defined by the Federal Aviation Administration (FAA) as a flight arriving 15 minutes or longer after scheduled arrivals time
 
 \subsubsection{Governing Bodies}
 \textbf{FAA} - Federal Aviation Administration is (FAA) is the governing body of all aviation in the U.S from aircraft certification to air traffic control
@@ -171,19 +200,19 @@ they do play in role in how the U.S forms their regulations.
 \subsubsection{Airline Theory}
 
 \textbf{Hub and Spoke} - This is a major theory of how to operate and airline, in short it means the airline has many big airport hubs that fly to other hubs.
-Each hub will then fly the passenger to thier final destination.
+Each hub will then fly the passenger to their final destination.
 
 \textbf{Point to Point} - This is another rivaling theory to hub and spoke, this means the airline will just fly the airport to the destination with not stop.
 
 \subsection{The Data} \label{data}
 This data was collected from the Bureau of Transportation Statistics (BLS) as part of the online Airline On-Time Arrival Performance Data. 
-I selected one year of data to begin, choosing the most recent as of Janurary 2023. The data range spans all U.S. Carriers flying domestically over the course of November 2021 - November 2022.
+I selected one year of data to begin, choosing the most recent as of January 2023. The data range spans all U.S. Carriers flying domestically over the course of November 2021 - November 2022.
 The data has many fields totaling to 120 columns. BLS provides an excellent readme that explains each data field, though I will highlight some very important ones to my research here.
 
 \emph{Note: \_ is not shown in these data types as they appear in the .CSV}
 
 \subsubsection{Basics}
-There are alot of columns that are basic information that would be expected of most sets, there is alot of options in this set with plenty of formating opertunity.
+There are a lot of columns that are basic information that would be expected of most sets, there is alot of options in this set with plenty of formating opertunity.
 
 \textbf{Year} - Year (4 digit)
 
@@ -198,8 +227,8 @@ There are alot of columns that are basic information that would be expected of m
 \textbf{FlightDate} - Flight Date Aggregation (yyyymmdd)
 
 \subsubsection{Indentifiers}
-There are many indentifiers included that are not entirely useful for my use as a DOT Marketing ID, but worth having should there be NA data columns that can be cross referenced.
-There is also multiple ways to indentify \emph{anything} in aviation, so there are international Air Transport Association(IATA) and US identifiers in this set.
+There are many identifiers included that are not entirely useful for my use as a DOT Marketing ID, but worth having should there be NA data columns that can be cross referenced.
+There is also multiple ways to identify \emph{anything} in aviation, so there are international Air Transport Association(IATA) and US identifiers in this set.
 The most important for my analysis are:
 
 \textbf{Marketing Airline Network} - These are common codes for airlines someone would see on their ticket, such as UA for United Airlines 
@@ -302,8 +331,8 @@ Extensive diversion information is not included, as it is noted, but not the foc
 \subsection{Data Cleaning}
 
 \subsubsection{Aggregation}
-Collecting the initial one year (11/21-11/22) data from BTS yields twelve seperate .zip files containing a .csv file and .html documentation readme.
-The first step to using this data is to concatanate all this information together into one usable format.
+Collecting the initial one year (11/21-11/22) data from BTS yields twelve separate .zip files containing a .csv file and .html documentation readme.
+The first step to using this data is to concatenate all this information together into one usable format.
 I accomplish this with a Python script using the \emph{Pandas} library. This script pulls in all .csv files into a list of Pandas Dataframes.
 Once these are Pandas Dataframes it is quite simple with all variables matching, they get concatanated. 
 Now with a single monolithic Dataframe, it is written to a new .csv file.
@@ -314,21 +343,21 @@ The first step in cleaning this data is to properly subset the information into 
 
 First, one main file will use the \emph{Pandas} library in Python to pull in our single monolithic csv file into a Dataframe. From here it is quite simple to mask only the data we want.
 I filter by either the \emph{Origin} or \emph{Dest} to be the airport of interest ORD.
-Once this mask is applied, the values are verfied to be an expected value, and once again exported using the next masked dataframe to a seperate .csv file. 
+Once this mask is applied, the values are verified to be an expected value, and once again exported using the next masked dataframe to a separate .csv file. 
 
 Second, a second file that contains only variables being heavily used, to help with operation speed. All the variables listed in section Figure \ref{data} will be maintained.
 The process will follow the same process as section Figure \ref{datasubset}. The output will be a much more compact file to operate on, to aid speed for the EDA and future model development.
 
 \subsubsection{NA Values}
 Now that the data has been subset into what will be used to explore, the next concern is NA values. There are some columns where this is acceptable, but other such as out delay times
-that are not. The first step is finiding all the columns that have an NA value and then determining what the value should be replaced with. Many of the delay related columns have many NA values,
+that are not. The first step is finding all the columns that have an NA value and then determining what the value should be replaced with. Many of the delay related columns have many NA values,
 the delay types (Weather, NAS, Security, and Late Aircraft) are null if they are not applicable. These columns get their NA values set to 0, as in no delay minutes. This takes care of the NAs that could corrupt data.
-The last big concerning item is flights that have no delay value, either arrival delay or arrival delay minutes, which could not be creted. Any NAs of these are dropped.
-This operation dropped \emph{17004} data points. This is signifigant, but still far less than 5\% of all the data. This now leaves the data with \emph{582721} observations.
+The last big concerning item is flights that have no delay value, either arrival delay or arrival delay minutes, which could not be created. Any NAs of these are dropped.
+This operation dropped \emph{17004} data points. This is significant, but still far less than 5\% of all the data. This now leaves the data with \emph{582721} observations.
 
 \subsubsection{Miscellaneous}
 Outliers in this dataset can get large. I decided to explore with a data subset where all delays are \emph{6 hours (720 min.)} or less (still including non-delays). This decision is not final as a better
-consideration for what an outlier is should be condicted in this set. This does simplify understanding the data, and making the point through visualiztion easier for the purpose of this EDA.
+consideration for what an outlier is should be conducted in this set. This does simplify understanding the data, and making the point through visualization easier for the purpose of this EDA.
 With this data mask the observations left is now \emph{582045}.
 
 \subsection{Exploratory Data Analysis}
@@ -394,7 +423,7 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.35]{../../img/delays_by_airline.png}
     \caption[]{}
     \label{fig:delaybyairline}
-    In Figure \ref{fig:delaybyairline} this shows the amount of delays distibution by each operating airline. United and American have the largest,
+    In Figure \ref{fig:delaybyairline} this shows the amount of delays distribution by each operating airline. United and American have the largest,
     which can be expected as ORD is a hub airport for American Airlines, and United Airlines who both fly a hub and spoke model. 
 \end{figure}
 
@@ -403,7 +432,7 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.40]{../../img/flights_by_airline.png}
     \caption[]{}
     \label{fig:flightsbyairline} 
-    In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a signifigantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
     there is not as large a difference in their delay distributions.
 \end{figure}
 
@@ -413,7 +442,7 @@ To begin breaking down the delays that occur, there are five categories official
     \caption[]{}
     \label{fig:lm_disbydelay}
     In Figure \ref{fig:lm_disbydelay} One of the relationships I wanted to briefly look at to further think about in the coming day was distance of the flight and the arrival delay.
-    This is a very stange visual I want to look into more, there is almost a regonizeable cluster for certian distance airports. Theis has no relationship between just these two variables.
+    This is a very stange visual I want to look into more, there is almost a recognizable cluster for certain distance airports. There's has no relationship between just these two variables.
 \end{figure}
 
 \begin{figure}
@@ -428,16 +457,16 @@ To begin breaking down the delays that occur, there are five categories official
 \break
 \subsection{Conclusion}
 
-This exploratory data analysis cleaned the data to be more usable, indentified some areas the data could be improved, and explored some basic relationships.
+This exploratory data analysis cleaned the data to be more usable, identified some areas the data could be improved, and explored some basic relationships.
 Moving forward to modelling some this EDA will prove valuable to understanding the data, and helping work towards the data being easily workable for machine learning models.
 \subsubsection{Data Improvement}
 During the EDA there is some spots of the data that can be improved and expanded. For future visualizations it would be helpful to have a nicer way of showing information
 such as airline names or even a map showing where flights go. There are supporting tables provided by BTS that would assist in expanding tha data. Another consideration is how to deal with outliers when building models
-there is a large range, that shouldn't eliminate all high delays. This should be solved mathmatically and researched what the FAA considers long delays, or a point of where delay is considered a new flight. Working with the data 
+there is a large range, that shouldn't eliminate all high delays. This should be solved mathematically and researched what the FAA considers long delays, or a point of where delay is considered a new flight. Working with the data 
 could also be made easier with some table work, on the names, and adding new information that is used more than once.
 
 \subsubsection{Relationships and Methods}
-In the EDA only a couple areas were explored, and both showed the problem is much more complex than a linear regression. Thinking ahead I think the possibility of a logisitic regression is there that could provide a good predictor or a delay.
+In the EDA only a couple areas were explored, and both showed the problem is much more complex than a linear regression. Thinking ahead I think the possibility of a logistic regression is there that could provide a good predictor or a delay.
 Another area I did not consider earlier is trees that could prove promising. There may be the need for some dimension reduction as these complex relationships may start adding uo in variable size. Lastly clustering may still be a good option where there are splits on more focused data.
 
 \section{Methodology}
@@ -451,12 +480,12 @@ the information more meaningful. This question will be solved with three differe
 
 \subsubsection{Method 1}
 
-The first method for this question that will be applied is logisitic regression. This method will have two possible categorical outputs, being the flight is delayed
-or the flight is not delayed (Using $>$15m FAA definition). Logisitic regression is great for two class problems, and will fit well here.
+The first method for this question that will be applied is logistic regression. This method will have two possible categorical outputs, being the flight is delayed
+or the flight is not delayed (Using $>$15m FAA definition). Logistic regression is great for two class problems, and will fit well here.
 
 \subsubsection{Method 2}
 The second method for this research question is also a random forest decision tree, but using more categorical outputs. These being our delay groups that are used in the dataset. They are not delayed, 15 minutes - 30 minutes, and builds all 15 minute increments
-up to 180 minuts for a total of 12 possible groups. The power of the decision tress will allow to go beyond saying a flight is delayed or not, and offer a range following
+up to 180 minutes for a total of 12 possible groups. The power of the decision tress will allow to go beyond saying a flight is delayed or not, and offer a range following
 the ranges the DOT provides.
 
 \subsection{Research Question 2}
@@ -466,7 +495,7 @@ For this question focus is put closer to the airport and the delays themselves. 
 but also adding a new type with the taxi time at each airport. Getting this information I can predict the categories of delays.
 
 \subsubsection{Method 1}
-The first method for this question that will be applied is logisitic regression. This method will have two possible categorical outputs, being the airport is the main delay
+The first method for this question that will be applied is logistic regression. This method will have two possible categorical outputs, being the airport is the main delay
 or other.
 
 \subsubsection{Method 2}
@@ -490,7 +519,7 @@ or not congested.
 \subsection{Validation}
 With the methods being used, there will need to be many validation methods used. For logisitc regression there will need to be simple classification measures such as accuracy and precision that can be determined
 testing the model on a subset of the data. With this info sensitivity and specificity can also be calculated, and all reported in a table before the next method. An ROC curve will also be used as a nice visual for these values calculated.
-For decision trees there will be variable inmportance measures and predictions verfied on a subset of the data. Both will start with 75\% of the data being used for training and the last 25\% to be used in validation.
+For decision trees there will be variable importance measures and predictions verified on a subset of the data. Both will start with 75\% of the data being used for training and the last 25\% to be used in validation.
 
 \subsection{Data}
 For the models in this research question we will provide:
@@ -527,14 +556,523 @@ Taxi Time
 
 \section{Ethical Recommendations}
 
+There are some ethical considerations for the tooling and analysis developed in this project looking closer at O'Hare International Airport flight delays.
+Predicting flight delays is hugely beneficial to the industry, allowing for carriers to plan ahead and work towards eliminating preventable delays.
+With this information though there are so problems that could arise such as delaying a flight that needs to be cancelled, prolonging the issues for the customer,
+or over adjusting for predicted delays by moving the flight time dramatically to attempt to avoid a delay.
+
+Airlines are widely known to have a low margin for profits, cutting costs, and maximizing money from flights. Carriers want to avoid any extra costs possible especially 
+having to accommodate a passenger who's flight has been cancelled. Predicting flight delays, and getting the precision down to a block, even if the block is large could
+allow for an airline to hold out cancelling a flight in the name of cost savings, since they believe they can see it would be a long delay, or even just extend the time, being
+more inconvenient for the passengers. This would not necessarily be industry breaking, but would leave an opportunity for airlines to skirt costs and create situations
+that would not be in the favor of the customer.
+
+Another consideration that is closely related, predicting flight delays, especially when looking at block departure or arrival times historically airlines would likely
+adjust their schedules each year to account for this. This is common, and isn't bad in itself, flights are large airports often have more padding with a higher average taxi
+time. This does leave the ability to "over-adjust" when seeing a flight it likely to be delayed where they could add a later arrival time not only to pad from a long taxi, but 
+an anticipated delay. This over adjustment could lead to longer flight (total not in air) times that could have an effect throughout the system, but not actually having 
+a delayed flight since with new pad, it is technically on time or even early if the adjustment becomes too extreme. 
+
+Carriers reputation is important to their business with a low margin, highly competitive industry, they will take every chance to increase their reputation or cut cost.
+With this analysis and implementation this information could be used to assist and airline with that, and of course could effect the future of airline schedules where total flight
+time is increased more than it should be in order to padding time to avoid delays. The information must be use responsibly and not adding unnecessary time to flights, that
+would cause these problems.
+
+\section{Analysis}
+
+\subsection{Research Question 1}
+
+Research question one set out to predict flight delays at O'Hare International Airport. There were two different model types used and three total models, each with a set of challenges
+and varying success. The first model used was a two class logistic regression (\ref{model:rq1_code}) that aimed to determining wether a flight was either delayed or not.
+This model did not require much extra preprocessing beyond the basic model level cleaned data %(\ref{})
+The data was subset (\ref{model:rq1_code}) to include some columns including the time blocks of flight and the departure delay.
+Building the first logistic regression for this question brought up an issue that will continue to be encountered for many other models. Since delays are a minority, the dataset has a heavily
+skewed imbalance toward on-time or early flights, following closely to the national numbers. Addressing the imbalance found here adds class weights inverse of the proportion found in the dataset.
+In the EDA section (\ref{EDA Statistics Code}) these proportions were used as weights, with class 0 (no delay) having a weight of 15 and class 1 (delay) having a weight of 85. With only two classes these weights
+work well as simple hyperparameters and greatly increased AUC and accuracy values. Other adjustments included random state, which is set to the class 0 weight, and a high max iteration with the amount of data to 
+allow the \it{lbfgs} solver converge.
+Overall the model worked very well for predicting a flight delay once the plane has begun its trip, with an accuracy of TODO.
+This is demonstrated with a confusion matrix as the first evaluation (\ref{fig:model:rq1:cfmtrx}).
+In %\ref{model:rq1:roc}
+our curve looked great with an area under curve (AUC) value of 0.93 on the ROC curve (\ref{fig:model:rq1:ROC}). The recall vs. precision curve (\ref{fig:model:rq1:prec_recall}) was slightly less promising, but still having a high enough value to be somewhat reliable.
+Of note with this model, with more data before flight perhaps with airline operations
+departure delays could have a lighter effect on the model's accuracy. This model would work well in determining a flight delay on a flight tracker or something of the same.
+
+The second model was also a logistic regression model, but with 15 separate classes, one for each departure block (-15 min to 180 minutes in 15 minute increments). This model was much less successful,
+showing an accuracy of 37\% and a more diverse confusion matrix (\ref{fig:model:rq1:cfmtrx_2}). Logistic regression as it stands is not the best approach for this many classes in the attempts made here. There could be improvement with further preprocessing and accounting for the imbalanced data.
+
+The third and last model for research question one was based on a random forest decision tree. This model included a new type of preprocessing from the previous models, synthetic minority oversampling technique (SMOTE) which provides 
+a similar desire to the first logistic regression, that oversamples the classes to bring the imbalance to a more equal level. With this another random state was added to the classifier similar to the logistic regression.
+Before SMOTE was applied , the random forest classifier was seeing numbers similar to the multi class logistic regression, now currently having an accuracy of 60\%, a large improvement. The confusion matrix (\ref{fig:model:rq1:cfmtrx_3}) shows there is still spread,
+but predicting within one or two classes meaning the error for an everyday user is not much longer than the minimum for a flight to be considered delay. 
+
 \section{Challenges}
 
 \section{Recommendations}
 
-\section{References}
+% Carvalho, Sternberg, A., Maia Gonçalves, L., Beatriz Cruz, A., Soares, J. A., Brandão, D., Carvalho, D., \&
+% Ogasawara, E. (2021). On the relevance of data science for flight delay research: a systematic review.
+% Transport Reviews, 41(4), 499–528. https://doi.org/10.1080/01441647.2020.1861123
+
+% Tu, Ball, M. O., \& Jank, W. S. (2008). Estimating Flight Departure Delay Distributions-A Statistical
+% Approach With Long-Term Trend and Short-Term Pattern. Journal of the American Statistical
+% Association, 103(481), 112–125. https://doi.org/10.1198/016214507000000257
+
+% Henriques, \& Feiteira, I. (2018). Predictive Modelling: Flight Delays and Associated Factors, Hartsfield–
+% Jackson Atlanta International Airport. Procedia Computer Science, 138, 638–645.
+% https://doi.org/10.1016/j.procs.2018.10.085
+
+% Bureau of Transport Statistics At a Glance. BTS. (n.d.). Retrieved February 3, 2023, from
+% https://www.transtats.bts.gov/homedrillchart.asp
 
 \section{Appendix}
 
+\subsection{Figures}
+
+\subsubsection{Research Question 1} 
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.40]{../../img/model_rq1_cfmtrx.png}
+    \caption[]{Two Class Logistic Regression Confusion Matrix}
+    \label{fig:model:rq1:cfmtrx}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.45]{../../img/model_rq1_roc.png}
+    \caption[]{Two Class Logistic Regression ROC Curve}
+    \label{fig:model:rq1:ROC}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.45]{../../img/model_rq1_prec_recall.png}
+    \caption[]{Two Class Logistic Regression Precision Vs. Recall}
+    \label{fig:model:rq1:prec_recall}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.50]{../../img/model_rq1_cfmtrx_2.png}
+    \caption[]{Multi-Class Logistic Regression Confusion Matrix}
+    \label{fig:model:rq1:cfmtrx_2}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics*[scale=.50]{../../img/model_rq1_cfmtrx_3.png}
+    \caption[]{Multi-Class Random Forest Decision Tree Confusion Matrix}
+    \label{fig:model:rq1:cfmtrx_3}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\subsubsection{Research Question 2}
+
+\subsubsection{Research Question 3}
+
+
 \section{Code}
+
+\subsection{Cleaning}
+
+\subsubsection{O'Hare Subset}
+
+This script gathered all the .CSV files, compiled them to one dataframe, subset to O'Hare International Airport's flights 
+and exported to a single .CSV file that is referenced throughout the project.
+
+\begin{python}
+csv_path = 'C:\Code\school\DAT-490-Data\csvs'
+data_lst = []
+
+csv_files = [f for f in listdir(csv_path) if isfile(join(csv_path, f))]
+
+for data_file in csv_files:
+    this_csv_path = join(csv_path, data_file)
+    data_lst.append(pd.read_csv(this_csv_path))
+
+assert len(data_lst) == 12
+
+flight_delays_df = pd.concat(data_lst)
+print("Length of Flight Delay Data:", len(flight_delays_df))
+
+ord_flight_delays_df = flight_delays_df.loc[ ( flight_delays_df['Origin'] == 'ORD' ) | ( flight_delays_df['Dest'] == 'ORD' ) ]
+
+print("Length of ORD Data:", len(ord_flight_delays_df))
+ord_flight_delays_df.to_csv('../data/ORD_11_21-11-22.csv')
+\end{python}
+
+\subsubsection{Model Level Data}
+
+This script cleans the data to model level and is only used in machine learning models. This drops NA values, fills 0 for delays types and
+subsets to only columns that may be needed when creating a model for this project.
+
+\begin{python}
+
+import pandas as pd
+df = pd.read_csv("../data/ORD_11_21-11_22.csv")
+
+#fill NA values of flight delay times by types
+df['CarrierDelay'] = df['CarrierDelay'].fillna(0)
+df['WeatherDelay'] = df['WeatherDelay'].fillna(0)
+df['NASDelay'] = df['NASDelay'].fillna(0)
+df['SecurityDelay'] = df['SecurityDelay'].fillna(0)
+df['LateAircraftDelay'] = df['LateAircraftDelay'].fillna(0)
+
+
+
+init_test_lst = ['Marketing_Airline_Network', 'Origin', 'DepTimeBlk', 'DepDelay', 'ArrTimeBlk',
+                 'ArrDelay', 'Distance', 'CarrierDelay', 'WeatherDelay', 'NASDelay', 'SecurityDelay',
+                  'LateAircraftDelay', 'TaxiIn', 'TaxiOut']
+model_col_lst = ['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DepDelay',
+'DestAirportSeqID', 'ArrTimeBlk', 'ArrivalDelayGroups', 'ArrDelay','Distance',
+'CarrierDelay', 'WeatherDelay', 'NASDelay', 'SecurityDelay', 'LateAircraftDelay',
+'TaxiIn', 'TaxiOut', 'ArrDel15', 'CRSElapsedTime','CRSDepTime', 'CRSArrTime']
+
+# blk_mapping.csv as a dict
+blk_map_dict ={
+    '0001-0559' : 0,
+    '0600-0659' : 6,
+    '0700-0759' : 7,
+    '0800-0859' : 8,
+    '0900-0959' : 9,
+    '1000-1059' : 10,
+    '1100-1159' : 11,
+    '1200-1259' : 12,
+    '1300-1359' : 13,
+    '1400-1459' : 14,
+    '1500-1559' : 15,
+    '1600-1659' : 16,
+    '1700-1759' : 17,
+    '1800-1859' : 18,
+    '1900-1959' : 19,
+    '2000-2059' : 20,
+    '2100-2159' : 21,
+    '2200-2259' : 22,
+    '2300-2359' : 23
+}
+
+# copy and apply block time mapping
+model_df = df.copy()
+model_df['DepTimeBlk'] = df['DepTimeBlk'].apply(lambda x: blk_map_dict.get(x))
+model_df['ArrTimeBlk'] = df['ArrTimeBlk'].apply(lambda x: blk_map_dict.get(x))
+
+model_df = model_df[model_col_lst]
+print(model_df.columns)
+
+# final drop of all left over NA values
+model_df = model_df.dropna()
+model_df.isna().values.any()
+
+# write to csv for later use
+print(len(model_df))
+model_df.to_csv('../data/ORD_11_21-11-22_model.csv')
+
+\end{python}
+
+\subsection{Exploratory Data Analysis}
+
+\subsubsection{EDA Specific Cleaning}
+The EDA uses some different data cleaning, as it was prepared before models. This is less strict to mappings, and uses more human readable strings.
+\begin{python}
+
+# libraries used
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+ord_df = pd.read_csv("../data/ORD_11_21-11_22.csv")
+
+# Columns with mixed type warning, lets investigate
+ord_df.iloc[:, [12, 14, 87, 94]]
+
+# None of these columns are needed, we can ignore and create our second subfile
+include_lst = ['Year', 'Quarter', 'Month', 'DayofMonth', 'DayOfWeek',
+'FlightDate','Marketing_Airline_Network', 'Tail_Number',
+'Flight_Number_Operating_Airline','Tail_Number', 'Origin', 'Dest',
+'OriginCityName', 'OriginState','OriginStateFips',
+'OriginStateName','DestCityName', 'DestState', 'DestStateFips',
+'DestStateName','CRSDepTime', 'DepTime', 'DepDelay',
+'DepDelayMinutes', 'DepDel15', 'DepartureDelayGroups', 'DepTimeBlk',
+'TaxiOut', 'WheelsOff', 'WheelsOn',
+'TaxiIn', 'CRSArrTime', 'ArrTime', 'ArrDelay', 'ArrDelayMinutes',
+'ArrDel15','ArrivalDelayGroups', 'ArrTimeBlk', 'Cancelled',
+'CancellationCode', 'Diverted', 'CRSElapsedTime','ActualElapsedTime',
+'AirTime', 'Flights', 'Distance', 'DistanceGroup',
+'CarrierDelay', 'WeatherDelay', 'NASDelay', 'SecurityDelay',
+'LateAircraftDelay']
+new_ord_df = ord_df[include_lst]
+
+ord_df = new_ord_df
+
+# gets all NA columns to further clean
+def lst_na_cols():
+    na_col_lst = []
+    no_na_lst = []
+    for i in ord_df.columns:
+        if ord_df[i].isna().values.any():
+            na_col_lst.append(i)
+        else:
+            no_na_lst.append(i)
+    assert len(ord_df.columns) == (len(na_col_lst) + len(no_na_lst))
+
+    print("NA exists in:", na_col_lst)
+    print("There are no NAs in :", no_na_lst)
+
+lst_na_cols()
+
+# Before dealing with NA we should fill the NAs that should be zero
+# These are delay times for sure
+ord_df['CarrierDelay'] = ord_df['CarrierDelay'].fillna(0)
+ord_df['WeatherDelay'] = ord_df['WeatherDelay'].fillna(0)
+ord_df['NASDelay'] = ord_df['NASDelay'].fillna(0)
+ord_df['SecurityDelay'] = ord_df['SecurityDelay'].fillna(0)
+
+#info for development
+pre_ord_df_len = len(ord_df)
+ord_df = ord_df.dropna(subset=['ArrDelayMinutes', 'ArrDelay'])
+print(f"Dropped {pre_ord_df_len - len(ord_df)} data points")
+
+# lastly cap to 12 hours
+ord_df = ord_df[ord_df['ArrDelay'] < 720]
+
+\end{python}
+
+\subsubsection{EDA Statistics Code} \label{EDA Statistics Code}
+
+\begin{python}
+ord_df.describe()
+
+ord_delay_mean = ord_df['ArrDelay'].mean()
+ord_delay_median = ord_df['ArrDelay'].median()
+
+print("ORD All flights Delay Mean:", ord_delay_mean)
+print("ORD All flights Delay Median:", ord_delay_median)
+
+# use FAA definition of delay
+ord_delays_df = ord_df['ArrDelay'] >= 15
+ord_delays_df = ord_df[ord_delays_df]
+ord_delay_mean = ord_delays_df['ArrDelay'].mean()
+ord_delay_median = ord_delays_df['ArrDelay'].median()
+
+print("ORD Delay Mean:", ord_delay_mean)
+print("ORD Delay Median:", ord_delay_median)
+
+flights_num = ord_df['ArrDelay'].count()
+delays_num = ord_delays_df['ArrDelay'].count()
+print("Amount of Flights:", flights_num)
+print("Amount of Delays:", delays_num)
+print("Precentage of Delayed Flights:", (delays_num/flights_num))
+
+\end{python}
+
+\subsubsection{EDA Plots Code}
+
+Code for Pie Chart of delay type split at ORD.
+
+\begin{python}
+    
+pie_chart_lst = [ord_df['CarrierDelay'].sum(), ord_df['WeatherDelay'].sum(),
+ ord_df['NASDelay'].sum(), ord_df['SecurityDelay'].sum(), ord_df['LateAircraftDelay'].sum()]
+
+pie_chart_labels_lst = ["Carrier Delay", 'Weather Delay', 'Air System Delay',
+ 'Security Delay', 'Late Aircraft Delay']
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+ax1.pie(pie_chart_lst, labels=pie_chart_labels_lst, autopct='%1.1f%%', explode=(.02, .02, .02, .02, .02));
+ax1.set_title("ORD Delay Split");
+
+\end{python}
+
+Bar plot of delays by month at ORD.
+
+\begin{python}
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+
+ord_delay_types_df = ord_delays_df[['Month','CarrierDelay', 'WeatherDelay', 'SecurityDelay', 'NASDelay', 'LateAircraftDelay']]
+delay_cnt_month = ord_delay_types_df.groupby(by='Month').sum()
+delay_cnt_month.plot(ax=ax1, kind='bar', stacked=True, cmap='jet')
+ax1.set_title("ORD Delay Type by Month");
+ax1.set_ylabel("Delay Count")
+
+\end{python}
+
+Box plot of Delay types at ORD.
+
+\begin{python}
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+ord_delay_types_df.plot.box(ax=ax1)
+ax1.set_title("ORD Delay Types Box Plot");
+
+ord_delay_types_df_2 = ord_delays_df[ord_delays_df['ArrDelay'] < 360] 
+ord_delay_types_df_2 = ord_delay_types_df_2[['Month','CarrierDelay', 'WeatherDelay', 'SecurityDelay', 'NASDelay', 'LateAircraftDelay']]
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+ord_delay_types_df_2.plot.box(ax=ax1)
+ax1.set_title("ORD Delay Types Box Plot Capped at 6 Hours");
+
+ord_delay_types_df_2 = ord_delays_df[ord_delays_df['ArrDelay'] < 180] 
+ord_delay_types_df_2 = ord_delay_types_df_2[['CarrierDelay', 'WeatherDelay', 'SecurityDelay', 'NASDelay', 'LateAircraftDelay']]
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+ord_delay_types_df_2.plot.box(ax=ax1)
+ax1.set_title("ORD Delay Types Box Plot Capped at 3 Hours");
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+ord_delays_df['ArrDelay'].plot(ax=ax1, kind='kde')
+ax1.set_title("ORD Delay Types Box Plot Capped at 3 Hours");
+
+
+\end{python}
+
+Distributions of airline flight delays at ORD.
+
+\begin{python}
+airlines_distribution = sns.displot(data=ord_delays_df, x='ArrDelay', col='Marketing_Airline_Network', col_wrap=2, hue='Marketing_Airline_Network')
+airlines_distribution.set(xlim=(0,180))
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+
+airline_nums_flights = airline_nums['Year']
+airline_nums_flights.plot.bar(ax=ax1)
+ax1.set_title("Flights at ORD by Airline")
+
+\end{python}
+
+KDE plot of flight delay times at ORD.
+
+\begin{python}
+
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+ord_delays_180_df = ord_delays_df[ord_delays_df['ArrDelay'] < 180] 
+ord_delays_180_df['ArrDelay'].plot(ax=ax1, kind='kde')
+ax1.set_title("ORD Arrival Delay KDE Capped at 3 Hours");
+
+\end{python}
+
+Simple linear regression for exploration.
+
+\begin{python}
+
+dep_time_lm = sns.lmplot(data=ord_df, x='LateAircraftDelay', y='CarrierDelay', line_kws={'color':'red'})
+dep_time_lm.set(title='Linear Regression Air Time by Arrival Delay')
+
+\end{python}
+
+%----------------------------------------------------------------------------------
+
+\subsection{Models}
+
+\subsubsection{Research Question 1} \label{model:rq1_code}
+
+Imports for RQ1 Machine Learning Techniques.
+\begin{python}
+# General Imports
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+# R1.1 Imports
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, recall_score, precision_score
+from sklearn.metrics import roc_curve, precision_recall_curve, roc_auc_score
+
+#R1.2 Imports
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import classification_report
+
+#R1.3 Imports
+from sklearn.ensemble import RandomForestClassifier
+
+df = pd.read_csv("../data/ORD_11_21-11-22_model.csv")
+\end{python}
+
+Logistic Regression (2 Classes)
+
+\begin{python}
+# Two class subset
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DestAirportSeqID', 'DepDelay', 'ArrTimeBlk', 'Distance', 'TaxiOut', 'CRSDepTime',
+ 'CRSArrTime', 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['ArrDel15']
+
+fit = LogisticRegression(solver='lbfgs', max_iter=10000, class_weight={0:15, 1:85}, random_state=15).fit(x_train, y_train)
+
+y_pred = fit.predict(x_test)
+y_prob = fit.predict_proba(x_test)
+y_prob = y_prob[:,1] # want the positive values
+\end{python}
+
+Logistic Regression Confusion Matrix Evaluation
+
+\begin{python}
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+
+matrix = confusion_matrix(y_test, y_pred)
+ConfusionMatrixDisplay(confusion_matrix=matrix).plot(ax=ax1)
+ax1.set_title("Arrival Delay Confusion Matrix (Logistic Regression)")
+
+print(f"Accuracy of Model: {accuracy_score(y_test, y_pred)}")
+print(f"Precision of Model: {precision_score(y_test, y_pred)}")
+print(f"Recall of Model: {recall_score(y_test, y_pred)}")
+\end{python}
+
+Logistic Regression ROC Curve Evaluation
+\begin{python}
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+fpr, tpr, _ = roc_curve(y_test, y_prob)
+auc = roc_auc_score(y_test, y_prob)
+
+print(f"AUC Score: {auc}")
+
+ax1.plot(fpr, tpr)
+ax1.set_ylabel('True Positive Rate')
+ax1.set_xlabel('False Positive Rate')
+ax1.set_title("Arrival Delay ROC Curve (Random Forrest Decision Tree)")
+\end{python}
+
+Logistic Regression Recall Vs. Precision Curve Evaluation
+\begin{python}
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+prec, recall, _ = precision_recall_curve(y_test, y_prob)
+
+ax1.plot(prec, recall)
+ax1.set_ylabel('Precision')
+ax1.set_xlabel('Recall')
+ax1.set_title("Arrival Delay Precision Vs. Recall (Logistic Regression)")
+\end{python}
+
+Logistic Regression (Multiple Classes)
+
+Random Forrest Decision Tree (Multiple Classes)
+
+%----------------------------------------------------------------------------------
+
+\pagebreak
+
+%TODO remove these and cite for real with BIBTEX
+% \cite{doi:10.1080/01441647.2020.1861123}
+% \cite{doi:10.1198/016214507000000257}
+% \cite{HENRIQUES2018638}
+% \cite{bts_table}
+
+\section{References}
+\bibliographystyle{plain}
+\bibliography{rough_draft}
 
 \end{document} 
