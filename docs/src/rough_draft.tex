@@ -3,6 +3,7 @@
 \usepackage{graphicx} 
 \usepackage{subfigure}
 \usepackage{pythonhighlight}
+\usepackage{placeins}
 \begin{document}
 
 \title{ORD Flight Delays}
@@ -10,6 +11,14 @@
 \maketitle
 
 \begin{abstract}
+
+Air travel is a dominant form of travel in the United states with millions of hours a year being wasted to delays.
+In this paper I investigate some causes for delay of a period of November 2021 to November 2022 at O'Hare International Airport in
+Chicago Illinois. This airport is a major hub for several American airlines, and proves to be a challenge to minimize this issue.
+After some exploration of the issue, a couple of machine learning methods are explored to predict air travel delays in both departure and arrival.
+These methods are compared for predicting delays, and more tight delay groups. The methods are put against each other having different usage that could prove useful
+in developing further research and models to apply to minimizing waste in the complex system that is domestic United States air travel.
+
 \end{abstract}
 
 %TODO ATR: Need to add 4-8 sections
@@ -121,6 +130,8 @@ would become a guaranteed delay, and predicting this could allow for better plan
 % busy airports such as LAX-JFK there is more time on the ground to maintain safe separation and
 % avoid incident.
 
+\pagebreak
+
 \section{Literature Review}
 
 As the air travel has grown substantially over the past 60 years, the investment in new facilities, aircraft and improved efficiency has grown along with it.
@@ -153,6 +164,7 @@ Research in flight delays is extensive, though much of airline delay prediction 
   allowing for some questions to be expanded from others. Methods and cleaning must be tailored to the airport, but may be similar to previous research, which can help finding the most prominent variables that effect a flight delay.
    This research will expand the knowledge base with ORD delay research, introducing more up to date data.
 
+\pagebreak
 
 \section{Exploratory Data Analysis}
 
@@ -404,7 +416,6 @@ To begin breaking down the delays that occur, there are five categories official
     In Figure \ref{fig:delaybymonth} this reflects similar to the pie chart, of note is the summer months have a much higher delay count. The busy travel season could be contributing to this, and worth further investigation.
 \end{figure}
 
-
 \begin{figure}
     \centering
     \includegraphics*[scale=.35]{../../img/delays_by_airline.png}
@@ -455,6 +466,8 @@ could also be made easier with some table work, on the names, and adding new inf
 \subsubsection{Relationships and Methods}
 In the EDA only a couple areas were explored, and both showed the problem is much more complex than a linear regression. Thinking ahead I think the possibility of a logistic regression is there that could provide a good predictor or a delay.
 Another area I did not consider earlier is trees that could prove promising. There may be the need for some dimension reduction as these complex relationships may start adding uo in variable size. Lastly clustering may still be a good option where there are splits on more focused data.
+
+\pagebreak
 
 \section{Methodology}
 
@@ -538,6 +551,8 @@ Weather Delay
 
 Taxi Time
 
+\pagebreak
+
 \section{Ethical Recommendations}
 
 There are some ethical considerations for the tooling and analysis developed in this project looking closer at O'Hare International Airport flight delays.
@@ -561,6 +576,8 @@ Carriers reputation is important to their business with a low margin, highly com
 With this analysis and implementation this information could be used to assist and airline with that, and of course could effect the future of airline schedules where total flight
 time is increased more than it should be in order to padding time to avoid delays. The information must be use responsibly and not adding unnecessary time to flights, that
 would cause these problems.
+
+\pagebreak
 
 \section{Analysis}
 
@@ -586,7 +603,7 @@ showing an accuracy of 37\% and a more diverse confusion matrix (\ref{fig:model:
 
 The third and fourth model for research question one was based on a random forest decision tree. These models included a new type of preprocessing from the previous models, synthetic minority oversampling technique (SMOTE) which provides 
 a similar desire to the first logistic regression, that oversamples the classes to bring the imbalance to a more equal level. With this another random state was added to the classifier similar to the logistic regression.
-Before SMOTE was applied , the random forest classifier was seeing numbers similar to the multi class logistic regression of around 30\%, now currently having an accuracy of 60\% with multi-class and TODO\% with 2 class, a large improvement. The confusion matrix (\ref{fig:model:rq1:cfmtrx_3}) shows there is still spread,
+Before SMOTE was applied , the random forest classifier was seeing numbers similar to the multi class logistic regression of around 30\%, now currently having an accuracy of 60\% with multi-class and 36\% with 2 class, a large improvement. The confusion matrix (\ref{fig:model:rq1:cfmtrx_3}) shows there is still spread,
 but predicting within one or two classes meaning the error for an everyday user is not much longer than the minimum for a flight to be considered delay. 
 
 \subsection{Research Question 2}
@@ -601,28 +618,28 @@ This was in the objective of observing if departure delays could be predicted fu
 Both logistic regression models are using SMOTE to resample the imbalanced data of delays, which with departure delays having a distribution of 
 75\% of on-time departed flights. Predicting the two class departure delays the regression model uses balanced class weights, fit intercept with an l2 penalty.
 With the high need of preprocessing with weaker predictors I created a grid search for some values in the regression models (ref TODO grid search).
-The outcome of this showed balanced class weights with fit intercept and l2 penalty was showing the highest accuracy score. This model proved to be okay the accuracy was TODO\% (REF TODO confusion matrix).
-The AUC values was TODO\% (TODO REF AUC). This model was far less successful than logistic regression for arrival delays. Multi-class would proved to fall even further with an accuracy of TODO\%.
+The outcome of this showed balanced class weights with fit intercept and l2 penalty was showing the highest accuracy score. This model proved to be okay the accuracy was 57\% (\ref{fig:model:rq2:cfmtrx_3}).
+The AUC values was 60\% (\ref{fig:model:rq2:ROC}). This model was far less successful than logistic regression for arrival delays. Multi-class would proved to fall even further with an accuracy of 21\%.
 This was improved by adding another parameter in the multi-class regression model, C. C allows for adjusting the penalty, setting this to 0.15 showed better results which is a very
 strong penalty. Logistic regression here, shows there may be a better model method for these predictions.
 
 As above preparation for the random forest models is very similar to the previous trained models for arrival delays. (\ref{analyze:rq1})
-Two class prediction was decently successful with an TODO accuracy of 75\%. This is much higher than the logistic regression, but also had a much longer runtime.
-Multi-class got a lower accuracy TODO but still passable over the logistic regression. In both of these models importance features were dominated by surprisingly day of the week 
+Two class prediction was decently successful with an accuracy of 77\%. This is much higher than the logistic regression, but also had a much longer runtime.
+Multi-class got a lower accuracy 54\% but still passable over the logistic regression. In both of these models importance features were dominated by surprisingly day of the week 
 and scheduled airtime. With this information this model could feed into an overall prediction or expanded to give a numeric value to allow more accurate overall delays from further time out and not 
 day of or almost in flight.
 
 % \subsection{Research Question 3}
 
-
+\pagebreak
 
 \section{Challenges}
 
-
+\pagebreak
 
 \section{Recommendations}
 
-
+\pagebreak
 
 \section{Appendix}
 
@@ -630,7 +647,10 @@ day of or almost in flight.
 
 \subsubsection{Research Question 1} 
 
-\begin{figure}
+%[!htb]
+\FloatBarrier
+
+\begin{figure}[!h]
     \centering
     \includegraphics*[scale=.40]{../../img/model_rq1_cfmtrx.png}
     \caption[]{Two Class Logistic Regression Confusion Matrix}
@@ -640,7 +660,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!h]
     \centering
     \includegraphics*[scale=.45]{../../img/model_rq1_roc.png}
     \caption[]{Two Class Logistic Regression ROC Curve}
@@ -650,7 +670,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.45]{../../img/model_rq1_prec_recall.png}
     \caption[]{Two Class Logistic Regression Precision Vs. Recall}
@@ -660,7 +680,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq1_cfmtrx_2.png}
     \caption[]{Multi-Class Logistic Regression Confusion Matrix}
@@ -670,7 +690,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq1_cfmtrx_3.png}
     \caption[]{Multi-Class Random Forest Decision Tree Confusion Matrix}
@@ -680,10 +700,19 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-%TODO reference for research question 3
-\begin{figure}
+\begin{figure}[!]
     \centering
-    \includegraphics*[scale=.50]{../../img/model_rq1_rf.png}
+    \includegraphics*[scale=.50]{../../img/model_rq1_cfmtrx_4.png}
+    \caption[]{Multi-Class Random Forest Decision Tree Confusion Matrix}
+    \label{fig:model:rq1:cfmtrx_4}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\begin{figure}[!]
+    \centering
+    \includegraphics*[scale=.45]{../../img/model_rq1_rf.png}
     \caption[]{Multi-Class Random Forest Decision Tree Variable Importance}
     \label{fig:model:rq1:rfc_1}
     % \label{fig:flightsbyairline} 
@@ -691,11 +720,21 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-%TODO ATR classifier without knowing dep delay?
+\begin{figure}[!]
+    \centering
+    \includegraphics*[scale=.50]{../../img/model_rq1_rf_2.png}
+    \caption[]{Multi-Class Random Forest Decision Tree Variable Importance}
+    \label{fig:model:rq1:rfc_2}
+    % \label{fig:flightsbyairline} 
+    % In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+    % there is not as large a difference in their delay distributions.
+\end{figure}
+
+\FloatBarrier
 
 \subsubsection{Research Question 2}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_cfmtrx_1.png}
     \caption[]{Two Class Logistic Regression Confusion Matrix}
@@ -705,7 +744,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.45]{../../img/model_rq2_roc.png}
     \caption[]{Two Class Logistic Regression ROC Curve}
@@ -715,7 +754,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.45]{../../img/model_rq2_prec_recall.png}
     \caption[]{Two Class Logistic Regression Precision Vs. Recall}
@@ -725,7 +764,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_cfmtrx_2.png}
     \caption[]{Two Class Logistic Regression Confusion Matrix}
@@ -735,7 +774,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_cfmtrx_3.png}
     \caption[]{Two Class Random Forest Decision Tree Confusion Matrix}
@@ -746,7 +785,7 @@ day of or almost in flight.
 \end{figure}
 
 %TODO reference for research question 3
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_rf.png}
     \caption[]{Two Class Random Forest Decision Tree Variable Importance}
@@ -756,8 +795,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_cfmtrx_4.png}
     \caption[]{Multi-Class Random Forest Decision Tree Confusion Matrix}
@@ -767,8 +805,7 @@ day of or almost in flight.
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-
-\begin{figure}
+\begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_rf_2.png}
     \caption[]{Multi-Class Random Forest Decision Tree Variable Importance}
@@ -779,7 +816,9 @@ day of or almost in flight.
 \end{figure}
 
 % \subsubsection{Research Question 3}
+\FloatBarrier
 
+\pagebreak
 
 \section{Code}
 
@@ -1074,14 +1113,13 @@ dep_time_lm.set(title='Linear Regression Air Time by Arrival Delay')
 
 \subsection{Models}
 
-\subsubsection{Research Question 1} \label{model:rq1_code}
-
-Imports for RQ1 Machine Learning Techniques.
+Imports Machine Learning Techniques.
 \begin{python}
 # General Imports
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import SMOTE
 
 # R1.1 Imports
 from sklearn.linear_model import LogisticRegression
@@ -1098,6 +1136,8 @@ from sklearn.ensemble import RandomForestClassifier
 df = pd.read_csv("../data/ORD_11_21-11-22_model.csv")
 \end{python}
 
+\subsubsection{Research Question 1} \label{model:rq1_code}
+
 Logistic Regression (2 Classes)
 
 \begin{python}
@@ -1112,6 +1152,130 @@ y_pred = fit.predict(x_test)
 y_prob = fit.predict_proba(x_test)
 y_prob = y_prob[:,1] # want the positive values
 \end{python}
+
+Logistic Regression (Multi-Class)
+
+\begin{python}
+# Multi class subset **overwriting variables**
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DepDelay', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'TaxiOut', 'CRSDepTime',
+ 'CRSArrTime', 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['ArrivalDelayGroups']
+
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+fit = LogisticRegression(solver='sag', max_iter=10000, multi_class='multinomial').fit(x_train, y_train)
+y_pred = fit.predict(x_test)
+y_prob = fit.predict_proba(x_test)
+y_prob = y_prob[:,1] # want the positive values
+\end{python}
+
+Random Forest Decision Tree (2 Class)
+
+\begin{python}
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DepDelay', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'TaxiOut', 'CRSDepTime', 'CRSArrTime',
+ 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['ArrDel15']
+
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+oversample = SMOTE(k_neighbors=2)
+df_x, df_y = oversample.fit_resample(df_x, df_y)
+rfc = RandomForestClassifier(random_state=15).fit(x_train, y_train)
+rfc_pred = rfc.predict(x_test)
+
+print(f"Accuracy of Model: {accuracy_score(y_test, rfc_pred)}")
+print(classification_report(y_test, y_pred))
+
+\end{python}
+
+Random Forest Decision Tree (Multi-Class)
+
+\begin{python}
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DepDelay', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'TaxiOut', 'CRSDepTime', 'CRSArrTime',
+ 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['ArrivalDelayGroups']
+
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+oversample = SMOTE(k_neighbors=2)
+df_x, df_y = oversample.fit_resample(df_x, df_y)
+rfc = RandomForestClassifier(random_state=15).fit(x_train, y_train)
+rfc_pred = rfc.predict(x_test)
+
+print(f"Accuracy of Model: {accuracy_score(y_test, rfc_pred)}")
+print(classification_report(y_test, y_pred))
+\end{python}
+
+\subsubsection{Research Question 2}
+
+Logistic Regression (2 Classes)
+
+\begin{python}
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'CRSDepTime',
+ 'CRSArrTime', 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['DepDel15']
+
+oversample = SMOTE(k_neighbors=2)
+df_x, df_y = oversample.fit_resample(df_x, df_y)
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+fit = LogisticRegression(solver='lbfgs', max_iter=10000, random_state=15, class_weight='balanced', fit_intercept=True, penalty='l2', C=0.15).fit(x_train, y_train)
+y_pred = fit.predict(x_test)
+y_prob = fit.predict_proba(x_test)
+y_prob = y_prob[:,1] # want the positive values
+
+print(f"Accuracy of Model: {accuracy_score(y_test, y_pred)}")
+print(f"Precision of Model: {precision_score(y_test, y_pred)}")
+print(f"Recall of Model: {recall_score(y_test, y_pred)}")
+\end{python}
+
+Logistic Regression (Multi-Class)
+
+\begin{python}
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'CRSDepTime',
+ 'CRSArrTime', 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['DepartureDelayGroups']
+
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+fit = LogisticRegression(solver='lbfgs', max_iter=10000, random_state=15, class_weight='balanced', multi_class='multinomial', fit_intercept=True, penalty='l2', C=0.15).fit(x_train, y_train)
+y_pred = fit.predict(x_test)
+y_prob = fit.predict_proba(x_test)
+y_prob = y_prob[:,1] # want the positive values
+
+print(f"Accuracy of Model: {accuracy_score(y_test, y_pred)}")
+\end{python}
+
+Random Forest Decision Tree (2 Class)
+
+\begin{python}
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'CRSDepTime',
+ 'CRSArrTime', 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['DepDel15']
+
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+oversample = SMOTE(k_neighbors=2)
+df_x, df_y = oversample.fit_resample(df_x, df_y)
+rfc = RandomForestClassifier(random_state=15).fit(x_train, y_train)
+rfc_pred = rfc.predict(x_test)
+
+print(f"Accuracy of Model: {accuracy_score(y_test, rfc_pred)}")
+print(classification_report(y_test, y_pred))
+\end{python}
+
+Random Forest Decision Tree (Multi-Class)
+
+\begin{python}
+df_x = df[['DOT_ID_Marketing_Airline', 'OriginAirportSeqID', 'DepTimeBlk', 'DestAirportSeqID', 'ArrTimeBlk', 'Distance', 'CRSDepTime',
+ 'CRSArrTime', 'Quarter', 'Month', 'DayOfWeek']]
+df_y = df['DepartureDelayGroups']
+
+x_train, x_test, y_train, y_test= train_test_split(df_x, df_y, test_size=.25)
+oversample = SMOTE(k_neighbors=2)
+df_x, df_y = oversample.fit_resample(df_x, df_y)
+
+rfc = RandomForestClassifier(random_state=15).fit(x_train, y_train)
+rfc_pred = rfc.predict(x_test)
+
+print(f"Accuracy of Model: {accuracy_score(y_test, rfc_pred)}")
+\end{python}
+
+\subsubsection{Model Evaluation}
 
 Logistic Regression Confusion Matrix Evaluation
 
@@ -1150,11 +1314,21 @@ ax1.plot(prec, recall)
 ax1.set_ylabel('Precision')
 ax1.set_xlabel('Recall')
 ax1.set_title("Arrival Delay Precision Vs. Recall (Logistic Regression)")
+
+
 \end{python}
 
-Logistic Regression (Multiple Classes)
+Random Forest Decision Tree Variable Importance
 
-Random Forrest Decision Tree (Multiple Classes)
+\begin{python}
+fig, ax1 = plt.subplots(1,1, figsize=(14,10))
+feature_importance = pd.Series(rfc.feature_importances_, index=x_train.columns).sort_values(ascending=False)
+
+feature_importance.plot.bar(ax=ax1)
+ax1.set_xlabel("Variable")
+ax1.set_ylabel("Importance")
+ax1.set_title("Arrival Delay  Random Forest Variable Importance")
+\end{python}
 
 %----------------------------------------------------------------------------------
 
