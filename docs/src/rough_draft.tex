@@ -21,8 +21,7 @@ in developing further research and models to apply to minimizing waste in the co
 
 \end{abstract}
 
-%TODO ATR: Need to add 4-8 sections
-%TODO: need to fix formatting, last probably
+%TODO ATR: Probably make this a ipynb at professors request
 
 \pagebreak
 
@@ -106,7 +105,6 @@ Can you predict flight departure delays, and their effect on an overall delay?
 
 \subsection{Hypotheses}
 
-%TODO ATR proofread again
 \textbf{\underline{Hypothesis 1:}}
 
 Looking at different categories of flight delays and difference in actual air time vs. actual flight
@@ -617,7 +615,7 @@ This was in the objective of observing if departure delays could be predicted fu
 
 Both logistic regression models are using SMOTE to resample the imbalanced data of delays, which with departure delays having a distribution of 
 75\% of on-time departed flights. Predicting the two class departure delays the regression model uses balanced class weights, fit intercept with an l2 penalty.
-With the high need of preprocessing with weaker predictors I created a grid search for some values in the regression models (ref TODO grid search).
+With the high need of preprocessing with weaker predictors I created a grid search for some values in the regression models (\ref{gridsearch}).
 The outcome of this showed balanced class weights with fit intercept and l2 penalty was showing the highest accuracy score. This model proved to be okay the accuracy was 57\% (\ref{fig:model:rq2:cfmtrx_3}).
 The AUC values was 60\% (\ref{fig:model:rq2:ROC}). This model was far less successful than logistic regression for arrival delays. Multi-class would proved to fall even further with an accuracy of 21\%.
 This was improved by adding another parameter in the multi-class regression model, C. C allows for adjusting the penalty, setting this to 0.15 showed better results which is a very
@@ -808,7 +806,6 @@ or fill a gap some of these entities may have in this subject area. Cutting wast
     % there is not as large a difference in their delay distributions.
 \end{figure}
 
-%TODO reference for research question 3
 \begin{figure}[!]
     \centering
     \includegraphics*[scale=.50]{../../img/model_rq2_rf.png}
@@ -1229,6 +1226,25 @@ print(classification_report(y_test, y_pred))
 
 \subsubsection{Research Question 2}
 
+Grid search \label{gridsearch}
+\begin{python}
+
+lst_tst = []
+for i in range(0,101):
+    for j in range(0,101):
+        lst_tst.append({0:i, 1:j})
+
+grid_params = [{'class_weight': lst_tst,
+"penalty": ['l1', 'l2'],
+'fit_intercept':[True, False]
+}]
+
+grid_search = GridSearchCV(fit, grid_params, cv=10, scoring='accuracy')
+grid_search.fit(x_train, y_train)
+print(grid_search.best_params_)
+
+\end{python}
+
 Logistic Regression (2 Classes)
 
 \begin{python}
@@ -1357,12 +1373,6 @@ ax1.set_title("Arrival Delay  Random Forest Variable Importance")
 %----------------------------------------------------------------------------------
 
 \pagebreak
-
-%TODO remove these and cite for real with BIBTEX
-% \cite{doi:10.1080/01441647.2020.1861123}
-% \cite{doi:10.1198/016214507000000257}
-% \cite{HENRIQUES2018638}
-% \cite{bts_table}
 
 \section{References}
 \bibliographystyle{plain}
