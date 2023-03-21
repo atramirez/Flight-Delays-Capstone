@@ -132,7 +132,7 @@ would become a guaranteed delay, and predicting this could allow for better plan
 
 \pagebreak
 
-\section{Literature Review}
+\section{Literature Review} \label{lit_review}
 
 As the air travel has grown substantially over the past 60 years, the investment in new facilities, aircraft and improved efficiency has grown along with it.
 Airlines in the United States pour huge amounts of time and effort into reducing delays each year. In the past 10 years we have observed delays hover around 20\%
@@ -635,9 +635,33 @@ day of or almost in flight.
 
 \section{Challenges}
 
+This topic is notoriously difficult, and airlines spend millions of dollars each year trying to maximize their on time performance and reputation.
+There are several challenges I encountered in this research including understanding the industry data, preparing the data, and deciding models.
+
+Understanding the data on face value was simple, during EDA there were few issues as the data allowed for multiple ways to express similar subjects such
+as a delay and delay group that sectioned off into 15 minute segments that were used extensively. The challenge became harder when working on models, as the initial list
+od data subsets was not sufficient and wildly inaccurate in all models. Adding in factors such as the time did not come until understanding that time could show an uptake in congestion
+with could be a large effect. The hardest hurdle was an ethical one, the data is laid out in a way where unless the flight is delayed 15 minutes or more, there is not specific delay information
+since there isn't technically a delay. This realization made it harder to justify using late aircraft information or any delay information at all in predicting departure delays, since it is so connected
+to a delay the model or a human could figure out the link very easily.
+
+Data preparation was an extremely time consuming subject, along with tuning models. This is likely not the best way to do it already.
+I had to investigate multiple ways to prepare data that is imbalanced since inherently knowing the national values, about 85\% or more of flights are on-time.
+Even with this implementation, SMOTE in higher amount delays effected the end models as it was only able to access a small sample size, which proved difficult
+in accuracy of delay group models. A significant amount of time was used attempting grid search on many models, which automated some hyper-parameter tuning, but still could be improved. 
+
+Lastly, deciding the models to use was difficult, though early on decided with this amount of data to stick to categorical outputs that would already be hard to get right. Numeric predictions
+would need much more data, which with computing limitations and other variables such as the early 2020 travel dips due to COVID-19 would prove to be too much to bear in the scope of this project.
+
+
 \pagebreak
 
 \section{Recommendations}
+
+This project had a limited scope in what is possible furthering the research. As mentioned in \ref{lit_review} many other forms of research have been conducted on this topic
+including specific airports such as Hartsfield Jackson International Airport in Atlanta Georgia. Further steps would be to make reliable models for more hub airports that could accurately predict
+per airport and contribute to a national or international delay prediction profile. This could be utilized by all regulatory bodies such as the FAA or DOT, and airlines alike to improve existing models
+or fill a gap some of these entities may have in this subject area. Cutting waste with machine learning could prove to save millions if not more each year in both hours and dollars.
 
 \pagebreak
 
