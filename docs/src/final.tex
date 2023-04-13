@@ -173,8 +173,6 @@ Research in flight delays is extensive, though much of airline delay prediction 
     and delayed. Last a couple intuitions of some possible variable relationships will be visualized.
 \end{abstract}
 
-\pagebreak
-
 \subsection{Important Terms}
 This contains some terms and information that will be used throughout the EDA that may not be common knowledge to help you understand. 
 
@@ -382,8 +380,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.5]{../../img/ord_delay_split_pie.png}
     \caption[Delays by Type]{ORD Delays by Type}
     \label{fig:delaybytype}
-    As seen in Figure \ref{fig:delaybytype} the two biggest delays are by carrier and late aircraft. The research questions are going to dive much deeper in how these delays are created and interacted with by airline and airport staff. Prediciting and eliminating 
-    these delays could say millions of hours a year.
 \end{figure}
 
 
@@ -392,8 +388,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.40]{../../img/3h_box.png}
     \caption[]{}
     \label{fig:3hbox}
-    In Figure \ref{fig:3hbox} This box plot is capped at the highest delay group in the data, 180 minutes or 3 hours. The large amount of flights are delayed for short amounts of time, but you can see the 
-    two largest areas cover much higher ranges of delays.    
 \end{figure}
 
 \begin{figure}
@@ -401,8 +395,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.45]{../../img/3h_kde.png}
     \caption[]{}
     \label{fig:3hkde}
-    In Figure \ref{fig:3hkde} looking at arrival delays, we can see the highest density peaks well before the hour mark sharply decreasing to a non zero
-    before the max included amount (180 minutes).
 \end{figure}
 
 
@@ -411,7 +403,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.40]{../../img/ord_delay_t_month.png}
     \caption[]{}
     \label{fig:delaybymonth}
-    In Figure \ref{fig:delaybymonth} this reflects similar to the pie chart, of note is the summer months have a much higher delay count. The busy travel season could be contributing to this, and worth further investigation.
 \end{figure}
 
 \begin{figure}
@@ -419,8 +410,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.35]{../../img/delays_by_airline.png}
     \caption[]{}
     \label{fig:delaybyairline}
-    In Figure \ref{fig:delaybyairline} this shows the amount of delays distribution by each operating airline. United and American have the largest,
-    which can be expected as ORD is a hub airport for American Airlines, and United Airlines who both fly a hub and spoke model. 
 \end{figure}
 
 \begin{figure}
@@ -428,8 +417,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[scale=.40]{../../img/flights_by_airline.png}
     \caption[]{}
     \label{fig:flightsbyairline} 
-    In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
-    there is not as large a difference in their delay distributions.
 \end{figure}
 
 \begin{figure}
@@ -437,8 +424,6 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[]{../../img/dist_by_delay.png}
     \caption[]{}
     \label{fig:lm_disbydelay}
-    In Figure \ref{fig:lm_disbydelay} One of the relationships I wanted to briefly look at to further think about in the coming day was distance of the flight and the arrival delay.
-    This is a very stange visual I want to look into more, there is almost a recognizable cluster for certain distance airports. There's has no relationship between just these two variables.
 \end{figure}
 
 \begin{figure}
@@ -446,11 +431,28 @@ To begin breaking down the delays that occur, there are five categories official
     \includegraphics*[]{../../img/airtime_by_delay.png}
     \caption[]{}
     \label{fig:lm_airtimebydelay}
-    In Figure \ref{fig:lm_airtimebydelay} The other relationship I wanted to preview was airtime by arrival delay, the thinking being more time in the air laves possibility 
-    to make up time flying faster or catching good wind. This very simple linear regression shows not simple relationship, though at a glance looks like more airline has lower delays, but there is obviously a more complex relationship.
 \end{figure}
 
+\FloatBarrier
+
+As seen in Figure \ref{fig:delaybytype} the two biggest delays are by carrier and late aircraft. The research questions are going to dive much deeper in how these delays are created and interacted with by airline and airport staff. Prediciting and eliminating 
+these delays could say millions of hours a year.
+In Figure \ref{fig:3hbox} This box plot is capped at the highest delay group in the data, 180 minutes or 3 hours. The large amount of flights are delayed for short amounts of time, but you can see the 
+two largest areas cover much higher ranges of delays.    
+In Figure \ref{fig:3hkde} looking at arrival delays, we can see the highest density peaks well before the hour mark sharply decreasing to a non zero
+before the max included amount (180 minutes).
+In Figure \ref{fig:delaybymonth} this reflects similar to the pie chart, of note is the summer months have a much higher delay count. The busy travel season could be contributing to this, and worth further investigation.
+In Figure \ref{fig:delaybyairline} this shows the amount of delays distribution by each operating airline. United and American have the largest,
+which can be expected as ORD is a hub airport for American Airlines, and United Airlines who both fly a hub and spoke model. 
+In Figure \ref{fig:flightsbyairline} To show the previous figure, American and United fly the most to ORD, though there is a significantly larger amount operated by United. In Figure \ref{fig:delaybyairline} 
+there is not as large a difference in their delay distributions.
+In Figure \ref{fig:lm_disbydelay} One of the relationships I wanted to briefly look at to further think about in the coming day was distance of the flight and the arrival delay.
+This is a very stange visual I want to look into more, there is almost a recognizable cluster for certain distance airports. There's has no relationship between just these two variables.
+In Figure \ref{fig:lm_airtimebydelay} The other relationship I wanted to preview was airtime by arrival delay, the thinking being more time in the air laves possibility 
+to make up time flying faster or catching good wind. This very simple linear regression shows not simple relationship, though at a glance looks like more airline has lower delays, but there is obviously a more complex relationship.
+
 \break
+
 \subsection{Conclusion}
 
 This exploratory data analysis cleaned the data to be more usable, identified some areas the data could be improved, and explored some basic relationships.
